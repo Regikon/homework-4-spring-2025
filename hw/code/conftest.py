@@ -1,5 +1,6 @@
 from ui.fixtures import *
 import pytest
+import dotenv
 
 def pytest_addoption(parser):
     parser.addoption('--browser', default='chrome')
@@ -23,6 +24,8 @@ def config(request):
         selenoid = None
         vnc = False
 
+    dotenv.load_dotenv()
+
     return {
         'browser': browser,
         'url': url,
@@ -30,4 +33,3 @@ def config(request):
         'selenoid': selenoid,
         'vnc': vnc,
     }
-
