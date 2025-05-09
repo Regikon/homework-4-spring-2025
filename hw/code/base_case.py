@@ -2,8 +2,10 @@ import pytest
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 from ui.pages.pre_login_page import PreLoginPage
+from ui.pages.registration_page import Registration
 import time
 import json
+
 
 class BaseCase:
     driver: WebDriver
@@ -16,20 +18,21 @@ class BaseCase:
         self.config = config
 
         if self.User=="Advertiser":
-            if not self.Cookies_created:
-                print("Cookies creating...")
+            if not type(self).Cookies_created:
                 self.pre_login = PreLoginPage(driver)
                 self.id_auth = self.pre_login.go_to_login_page()
-                time.sleep(10)
+                time.sleep(50)
                 
                 self.registration = self.id_auth.go_to_registration_page()
+                self.registration.switch_account()
 
                 cookies = driver.get_cookies()
                 with open('cookies.json', 'w') as file:
                     json.dump(cookies, file)
-                self.Cookies_created = True
+                type(self).Cookies_created = True
             else:
-                print("Cookies already created")
+                self.driver.get("https://ads.vk.com/")
+                self.registration = Registration(driver)
                 with open('cookies.json', 'r') as file:
                     cookies = json.load(file)
                 for cookie in cookies:

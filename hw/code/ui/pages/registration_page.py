@@ -10,11 +10,16 @@ import time
 
 class Registration(BasePage):
     locators = RegistrationPageLocators
-    url = 'https://ads.vk.com/hq/registration'
+    url = 'https://ads.vk.com'
 
-    def __init__(self, driver):
-        self.driver = driver
-        self.is_opened()
+    def is_opened(self, timeout=15) -> bool:
+        started = time.time()
+        while time.time() - started < timeout:
+            if self.driver.current_url.startswith(self.url):
+                return True
+        raise PageNotOpenedException(f'{self.url} did not open in {timeout} sec, current url {self.driver.current_url}')
+
+    def switch_account(self):
         self.click(self.locators.SWITCH_MENU)
         self.click(self.locators.ACCOUNT)
         
