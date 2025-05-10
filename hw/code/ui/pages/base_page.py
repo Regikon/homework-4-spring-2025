@@ -1,4 +1,5 @@
 import time
+from typing import List
 
 from selenium.webdriver.remote.webelement import WebElement
 
@@ -27,13 +28,15 @@ class BasePage(object):
         self.driver = driver
         self.is_opened()
 
-    def is_opened(self, timeout=15) -> bool:
+    def is_opened(self, timeout=15, startswithcompare=False) -> bool:
         """
         Wait the page to be loaded. If it is not loaded in given timeout, throw PageNotOpenedException
         """
         started = time.time()
         while time.time() - started < timeout:
-            if self.__trim_query(self.driver.current_url) == self.url:
+            if startswithcompare and self.driver.current_url.startswith(self.url):
+                return True
+            elif not startswithcompare and self.__trim_query(self.driver.current_url) == self.url:
                 return True
         raise PageNotOpenedException(f'{self.url} did not open in {timeout} sec, current url {self.driver.current_url}')
 
@@ -50,6 +53,10 @@ class BasePage(object):
         Find the element by locator. Waits for the element to be loaded with given timeout
         """
         return self.wait(timeout).until(EC.presence_of_element_located(locator))
+
+    def find_all(self, locator, timeout=None) -> List[WebElement]:
+        self.wait(timeout).until(EC.presence_of_element_located(locator))
+        return self.driver.find_elements(locator)
 
     def click(self, locator, timeout=None):
         self.find(locator, timeout=timeout)

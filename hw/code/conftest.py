@@ -50,6 +50,21 @@ def partner_credentials() -> Tuple[str, str]:
     )
 
 @pytest.fixture(scope='session')
+def partner_id() -> str:
+    id = os.getenv("FSO_PARTNER_ID")
+    if id is None:
+        raise RuntimeError("partner id is requested, but now found in FSO_PARTNER_ID env variable")
+    return id
+
+@pytest.fixture(scope='session')
+def advertiser_id() -> str:
+    id = os.getenv("FSO_ADVERTISER_ID")
+    if id is None:
+        raise RuntimeError("partner id is requested, but now found in FSO_PARTNER_ID env variable")
+    return id
+
+
+@pytest.fixture(scope='session')
 def advertiser_credentials() -> Tuple[str, str]:
     user = os.getenv("FSO_ADVERTISER_USER")
     if user is None:
