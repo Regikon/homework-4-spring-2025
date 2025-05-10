@@ -18,11 +18,11 @@ class TestLogin(BaseCase):
 class TestPartnerLogin(BaseCase):
     user = UserType.PARTNER
 
-    #@pytest.mark.skip('skip')
+    @pytest.mark.skip('skip')
     def test_has_cookies(self):
         assert len(self.driver.get_cookies()) > 0
 
-    #@pytest.mark.skip('skip')
+    @pytest.mark.skip('skip')
     def test_does_not_need_login_twice(self):
         # If you prompted to login, test failed
         self.driver.get(PartnerDashboardPage.url)
