@@ -1,10 +1,12 @@
+from typing import Dict, List, Tuple
 from ui.fixtures import *
 import pytest
 import dotenv
+import os
 
 def pytest_addoption(parser):
     parser.addoption('--browser', default='chrome')
-    parser.addoption('--url', default='https://example.org')
+    parser.addoption('--url', default='https://ads.vk.com')
     parser.addoption('--debug_log', action='store_true')
     parser.addoption('--selenoid', action='store_true')
     parser.addoption('--vnc', action='store_true')
@@ -33,3 +35,39 @@ def config(request):
         'selenoid': selenoid,
         'vnc': vnc,
     }
+
+@pytest.fixture(scope='session')
+def partner_credentials() -> Tuple[str, str]:
+    user = os.getenv("FSO_PARTNER_USER")
+    if user is None:
+        raise RuntimeError("partner user is not provided via FSO_PARTNER_USER variable")
+    password = os.getenv("FSO_PARTNER_PASSWORD")
+    if password is None:
+        raise RuntimeError("partner password is not provided via FSO_PARTNER_PASSWORD variable")
+    return (
+        user,
+        password
+    )
+
+@pytest.fixture(scope='session')
+def advertiser_credentials() -> Tuple[str, str]:
+    user = os.getenv("FSO_ADVERTISER_USER")
+    if user is None:
+        raise RuntimeError("advertiser user is not provided via FSO_ADVERTISER_USER variable")
+    password = os.getenv("FSO_ADVERTISER_PASSWORD")
+    if password is None:
+        raise RuntimeError("partner password is not provided via FSO_ADVERTISER_PASSWORD variable")
+    return (
+        user,
+        password
+    )
+
+@pytest.fixture(scope='session')
+def partner_session() -> List[Dict[str, str]]:
+    # Login code is responsible for filling this list
+    return []
+
+@pytest.fixture(scope='session')
+def advertiser_session() -> List[Dict[str, str]]:
+    # Login code is responsible for filling this list
+    return []
