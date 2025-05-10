@@ -24,3 +24,17 @@ class TestPartnerLogin(BaseCase):
     def test_does_not_need_login_twice(self):
         # If you prompted to login, test failed
         pass
+
+class TestAdvertiserLogin(BaseCase):
+    user = UserType.ADVERTISER
+
+    @pytest.mark.skip('skip')
+    def test_has_cookies(self):
+        assert len(self.driver.get_cookies()) > 0
+
+    @pytest.mark.skip('skip')
+    def test_does_not_need_login_twice(self):
+        # If you prompted to login, test failed
+        pass
+
+
