@@ -23,7 +23,8 @@ class BaseCase:
             # We need to login
             session = self.__extract_session(request)
             if len(session) == 0:
-                self.__login()
+                user_id = self.__get_user_id(request)
+                self.__login(user_id)
                 session.clear()
                 session.extend(self.driver.get_cookies())
                 return
@@ -34,14 +35,19 @@ class BaseCase:
         # self.my_page: MyPage = (request.getfixturevalue('my_page'))
         # request is a FixtureRequest, added as a parameter to this function
 
-    def __login(self):
+    def __login(self, user_id):
         self.driver.get(MainPage.url)
         main_page = MainPage(self.driver)
         login_page = main_page.go_to_login_page()
-        login_page.login()
+        undefined_profile_page = login_page.login()
+        undefined_profile_page.switch_account(user_id)
 
     def __extract_session(self, request: FixtureRequest) -> List[Dict[str, str]]:
         if self.user == UserType.ADVERTISER:
             return request.getfixturevalue('advertiser_session')
         return request.getfixturevalue('partner_session')
 
+    def __get_user_id(self, request: FixtureRequest) -> str:
+        if self.user == UserType.ADVERTISER:
+            return request.getfixturevalue('advertiser_id')
+        return request.getfixturevalue('partner_id')
