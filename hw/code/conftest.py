@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple, TypedDict
 from ui.fixtures import *
 import pytest
 import dotenv
@@ -77,12 +77,22 @@ def advertiser_credentials() -> Tuple[str, str]:
         password
     )
 
-@pytest.fixture(scope='session')
-def partner_session() -> List[Dict[str, str]]:
-    # Login code is responsible for filling this list
-    return []
+class Session(TypedDict):
+    cookie: Optional[List[Dict[str, str]]]
+    local_storage: Optional[Dict[str, str]]
 
 @pytest.fixture(scope='session')
-def advertiser_session() -> List[Dict[str, str]]:
+def partner_session() -> Session:
     # Login code is responsible for filling this list
-    return []
+    return {
+        'cookie': None,
+        'local_storage': None
+    }
+
+@pytest.fixture(scope='session')
+def advertiser_session() -> Session:
+    # Login code is responsible for filling this list
+    return {
+        'cookie': None,
+        'local_storage': None
+    }
