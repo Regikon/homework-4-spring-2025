@@ -21,7 +21,7 @@ class BasePage(object):
     """
 
     locators = base_page_locators
-    url = 'https://example.org'
+    url = 'https://ads.vk.com'
 
     def __init__(self, driver: WebDriver):
         self.driver = driver
@@ -33,7 +33,7 @@ class BasePage(object):
         """
         started = time.time()
         while time.time() - started < timeout:
-            if self.driver.current_url == self.url:
+            if self.__trim_query(self.driver.current_url) == self.url:
                 return True
         raise PageNotOpenedException(f'{self.url} did not open in {timeout} sec, current url {self.driver.current_url}')
 
@@ -55,3 +55,9 @@ class BasePage(object):
         self.find(locator, timeout=timeout)
         elem = self.wait(timeout).until(EC.element_to_be_clickable(locator))
         elem.click()
+
+    def __trim_query(self, url: str) -> str:
+        query_start = url.find('?')
+        if query_start > 0:
+            return url[:query_start]
+        return url
