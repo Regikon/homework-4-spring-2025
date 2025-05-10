@@ -28,15 +28,15 @@ class BasePage(object):
         self.driver = driver
         self.is_opened()
 
-    def is_opened(self, timeout=15, startswithcompare=False) -> bool:
+    def is_opened(self, timeout=15, starts_with_compare=False) -> bool:
         """
         Wait the page to be loaded. If it is not loaded in given timeout, throw PageNotOpenedException
         """
         started = time.time()
         while time.time() - started < timeout:
-            if startswithcompare and self.driver.current_url.startswith(self.url):
+            if starts_with_compare and self.driver.current_url.startswith(self.url):
                 return True
-            elif not startswithcompare and self.__trim_query(self.driver.current_url) == self.url:
+            elif not starts_with_compare and self.__trim_query(self.driver.current_url) == self.url:
                 return True
         raise PageNotOpenedException(f'{self.url} did not open in {timeout} sec, current url {self.driver.current_url}')
 

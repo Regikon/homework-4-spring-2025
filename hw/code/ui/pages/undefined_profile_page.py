@@ -7,8 +7,8 @@ class UndefinedProfilePage(BasePage):
 
     # we need to redefine this method because we have unknown profile
     # and unknown url
-    def is_opened(self, timeout=15, startswithcompare=True) -> bool:
-        return super().is_opened(timeout, startswithcompare)
+    def is_opened(self, timeout=15, starts_with_compare=True) -> bool:
+        return super().is_opened(timeout, starts_with_compare)
 
     def switch_account(self, account_id: str):
         self.click(self.locators.SWITCH_PROFILE_DROPDOWN)
