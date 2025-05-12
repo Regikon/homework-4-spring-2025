@@ -1,10 +1,16 @@
 from typing import List
 
+from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class BaseComponent(object):
+    locators = None
+
+    def __init__(self, driver: WebDriver) -> None:
+        self.driver = driver
+
     def wait(self, timeout=None) -> WebDriverWait:
         """
         Get WebDriverWait object with given timeout
