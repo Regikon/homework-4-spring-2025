@@ -29,3 +29,5 @@ class PartnerAddSitePage(BasePage):
         self.click(self.locators.ADD_SITE_BUTTON)
         return PartnerSiteAdBlocksPage(self.driver)
 
+    def has_site_link_error(self):
+        return self.has_element(self.locators.INVALID_SITE_LINK_ERROR)

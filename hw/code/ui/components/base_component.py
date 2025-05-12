@@ -34,5 +34,10 @@ class BaseComponent(object):
         elem = self.wait(timeout).until(EC.element_to_be_clickable(locator))
         elem.click()
 
-    def has_element(self, locator) -> bool:
-        return len(self.driver.find_elements(locator)) > 0
+    def has_element(self, locator, timeout=None) -> bool:
+        try:
+            # if element is not found within the timeout, the exception will be thrown
+            self.find(locator, timeout)
+            return True
+        except Exception:
+            return False
