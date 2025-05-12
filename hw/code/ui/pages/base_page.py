@@ -22,7 +22,7 @@ class BasePage(BaseComponent):
     url = 'https://ads.vk.com'
 
     def __init__(self, driver: WebDriver):
-        self.driver = driver
+        super().__init__(driver)
         self.is_opened()
 
     def is_opened(self, timeout=15, starts_with_compare=False) -> bool:

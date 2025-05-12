@@ -33,3 +33,6 @@ class BaseComponent(object):
         self.find(locator, timeout=timeout)
         elem = self.wait(timeout).until(EC.element_to_be_clickable(locator))
         elem.click()
+
+    def has_element(self, locator) -> bool:
+        return len(self.driver.find_elements(locator)) > 0
