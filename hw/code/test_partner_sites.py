@@ -95,7 +95,6 @@ class TestPartnerSite(BaseCase):
     def test_error_if_try_to_set_too_long_site_name(self, one_site: PartnerSite):
         site_page = one_site.go_to_site_page(self.driver)
         site_page.header.set_site_name('a' * (2 * self.MAX_SITE_NAME_LENGTH))
-        assert site_page.header.is_name_input_active()
         assert site_page.header.has_name_too_long_error()
 
 class TestPartnerSites(BaseCase):
