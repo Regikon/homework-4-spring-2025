@@ -11,9 +11,14 @@ class AdvertiserSitesLocators:
     DISMISS_BY_DOMAIN = (By.XPATH, '//div[@role="button" and contains(@class, "vkuiModalDismissButton")]')
     PIXEL_ROWS = (By.XPATH, '//div[contains(@class, "PixelsList__row")]')
 
-    DELETE_PIXEL = (By.XPATH, '//label[@data-testid="dropdown-item" and .//span[text()="Удалить пиксель"] ]')
+    DELETE_PIXEL_H2 = (By.XPATH, '//h2[text()="Удаление пикселя"]')
     CONFIRM_DELETE = (By.XPATH, '//button[.//span[text()="Удалить"]]')
 
+    INPUT_URL_CONTAINS = (By.XPATH, '//input[@placeholder="Введите значение"]')
+    INPUT_CATEGORY = (By.XPATH, '//div[contains(@id, "purchase")]')
+    INPUT_CONDITION = (By.XPATH, '//div[contains(@id, "uss")]')
+
+    DIV_ERROR = (By.XPATH, '//div[text()="Внутренняя ошибка сервера"]')
 
     SETTINGS_PIXEL = (By.XPATH, '//a[text()="Настройка"]')
     MORE_BUTTON = (By.XPATH, '//button[contains(@class, "PixelMoreCell_moreButton")]')
@@ -23,11 +28,13 @@ class AdvertiserSitesLocators:
     CONFIRM_RENAME = (By.XPATH, '//button[.//span[text()="Изменить"]]')
 
     ADD_EVENT_TO_PIXEL = (By.XPATH, '//button[.//span[text()="Добавить событие"]]')
+    ADD_EVENT_TO_PIXEL_CONFIRM = (By.XPATH, '//div[contains(@class, "Footer_footer")]//button[.//span[text()="Добавить событие"]]')
     INPUT_EVENT_NAME = (By.XPATH, '//input[@placeholder="Введите название"]')
-    INPUT_URL_CONTAINS = (By.XPATH, '//input[@placeholder="Введите значение"]')
+    INPUT_EVENT_CATEGORY = (By.XPATH, '//input[@placeholder="Выберите категорию"]')
+    INPUT_EVENT_CONDITION = (By.XPATH, '//input[@placeholder="Выберите условие"]')
 
     CODE_PIXEL_MENU = (By.XPATH, '//div[@role="tab" and .//span[text()="Код пикселя"]]')
-    DATA_LAYER_SWITCH = (By.XPATH, '//div[contains(text(), "data-layer")]/ancestor::label//input[@type="checkbox"]')
+    DATA_LAYER_SWITCH = (By.XPATH, '//label[.//div[contains(text(), "data-layer")]]')
     DATA_LAYER_INPUT = (By.XPATH, '//input[@placeholder="Введите название слоя"]')
 
     TAGS_PIXEL_MENU = (By.XPATH, '//div[@role="tab" and .//span[text()="Аудиторные теги"]]') 
@@ -35,13 +42,13 @@ class AdvertiserSitesLocators:
     TAG_INPUT = (By.XPATH, '//input[@placeholder="Введите название тега"]')
     TAG_INPUT_BUTTON = (By.XPATH, '//button[.//span[text()="Создать"]]')
     TAG_ROW = (By.XPATH, '//div[contains(@class, "TagsList_row")]')
-    SHOW_TAG_BUTTON = (By.XPATH, '//button[.//span[contains(@class, "vkuiIcon--copy")]]')
+    SHOW_TAG_BUTTON = (By.XPATH, '//button[contains(@class, "TagsList_button")]')#'//button[.//svg[contains(@class, "vkuiIcon--brackets_slash_outline")]]')
     TAG_CLOSE_BUTTON = (By.XPATH, '//button[.//span[text()="Закрыть"]]')
 
     ACCESS_PIXEL_MENU = (By.XPATH, '//div[@role="tab" and .//span[text()="Доступы"]]')
     GIVE_ACCESS_BUTTON = (By.XPATH, '//button[.//span[text()="Выдать доступ"]]')
     ACCESS_INPUT = (By.XPATH, '//input[@placeholder="Введите ID аккаунта VK Рекламы"]')
-    ACCESS_GIVE_BUTTON = (By.XPATH, '//button[.//span[text()="Выдать доступ"]]')
+    ACCESS_GIVE_BUTTON = (By.XPATH, '//div[contains(@class, "ModalManagerPage_footer")]//button[.//span[text()="Выдать доступ"]]')
     ACCESS_CLOSE_BUTTON = (By.XPATH, '//button[.//span[text()="Закрыть"]]')
     ACCESS_ROW = (By.XPATH, '//div[contains(@class, "AccessKeysList_row")]')
     REVOKE_ACCESS_BUTTON = (By.XPATH, '//button[contains(@class, "RevokeSharingKeyCell")]')
