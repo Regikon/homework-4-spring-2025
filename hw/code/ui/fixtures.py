@@ -41,6 +41,9 @@ def get_driver(browser_name):
         raise RuntimeError(f'Unsupported browser: "{browser_name}"')
     return browser
 
+def get_default_driver():
+    return get_driver('chrome')
+
 @pytest.fixture(scope='session', params=['chrome'])
 def all_drivers(config, request):
     url = config['url']
