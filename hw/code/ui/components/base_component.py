@@ -30,7 +30,7 @@ class BaseComponent(object):
         return self.driver.find_elements(locator)
 
     def click(self, locator, timeout=None):
-        self.find(locator, timeout=timeout)
+        elem = self.find(locator, timeout=timeout)
         elem = self.wait(timeout).until(EC.element_to_be_clickable(locator))
         elem.click()
 

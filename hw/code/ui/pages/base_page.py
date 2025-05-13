@@ -47,3 +47,4 @@ class BasePage(BaseComponent):
         input = self.find(locator)
         input.clear()
         input.send_keys(text)
+        input.submit()
