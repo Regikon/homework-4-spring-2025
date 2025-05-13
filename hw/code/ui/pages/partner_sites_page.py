@@ -13,4 +13,7 @@ class PartnerSitesPage(BasePage):
     def go_to_add_site_page(self) -> PartnerAddSitePage:
         self.click(self.locators.ADD_SITE_BUTTON)
         return PartnerAddSitePage(self.driver)
+    
+    def has_site_with_id(self, id: int) -> bool:
+        return self.has_element(self.locators.SITE_ENTRY(id))
 

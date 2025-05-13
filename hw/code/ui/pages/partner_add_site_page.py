@@ -31,3 +31,12 @@ class PartnerAddSitePage(BasePage):
 
     def has_site_link_error(self):
         return self.has_element(self.locators.INVALID_SITE_LINK_ERROR)
+
+    def has_empty_name_error(self):
+        return self.has_element(self.locators.EMPTY_SITE_NAME_ERROR)
+
+    def has_too_large_name_error(self):
+        return self.has_element(self.locators.TOO_BIG_NAME_ERROR)
+
+    def is_add_site_button_active(self) -> bool:
+        return self.find(self.locators.ADD_SITE_BUTTON).is_enabled()
