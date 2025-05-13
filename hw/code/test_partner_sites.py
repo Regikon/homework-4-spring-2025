@@ -1,9 +1,11 @@
 
 from typing import List
+from selenium.webdriver import Keys
 from selenium.webdriver.chrome.webdriver import WebDriver
 from base_case import UserType, BaseCase
 from ui.fixtures import get_default_driver
 from ui.pages.partner_sites_page import PartnerSitesPage, SiteStatus
+from ui.pages.partner_site_ad_blocks_page import PartnerSiteAdBlocksPage
 from utils.random import generate_random_string
 
 import pytest
@@ -46,6 +48,10 @@ class PartnerSite(object):
     def with_random_name(cls, link: str, driver: WebDriver):
         return cls(link, generate_random_string(cls.RANDOM_NAME_LEN), driver)
 
+    def go_to_site_page(self, driver: WebDriver) -> PartnerSiteAdBlocksPage:
+        driver.get(PartnerSiteAdBlocksPage.generate_url(self.__id))
+        return PartnerSiteAdBlocksPage(driver)
+
 VALID_SITE_LINK = 'uart.site'
 
 # I tried to make this class scoped fixture,
@@ -67,6 +73,30 @@ def one_site(driver):
     site = PartnerSite.with_random_name(VALID_SITE_LINK, driver)
     yield site
     site.remove(driver)
+
+class TestPartnerSite(BaseCase):
+    user = UserType.PARTNER
+
+    VALID_SITE_NAME = 'best-page'
+
+    MAX_SITE_NAME_LENGTH = 200
+
+    def test_site_changes_name(self, one_site: PartnerSite):
+        site_page = one_site.go_to_site_page(self.driver)
+        site_page.header.set_site_name(self.VALID_SITE_NAME)
+        self.driver.refresh()
+        assert site_page.header.site_name == self.VALID_SITE_NAME
+
+    def test_site_cannot_change_to_empty_name(self, one_site: PartnerSite):
+        site_page = one_site.go_to_site_page(self.driver)
+        site_page.header.set_site_name('a' + Keys.BACKSPACE)
+        assert site_page.header.is_name_input_active()
+
+    def test_error_if_try_to_set_too_long_site_name(self, one_site: PartnerSite):
+        site_page = one_site.go_to_site_page(self.driver)
+        site_page.header.set_site_name('a' * (2 * self.MAX_SITE_NAME_LENGTH))
+        assert site_page.header.is_name_input_active()
+        assert site_page.header.has_name_too_long_error()
 
 class TestPartnerSites(BaseCase):
     user = UserType.PARTNER
