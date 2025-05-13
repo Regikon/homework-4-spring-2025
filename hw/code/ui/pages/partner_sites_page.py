@@ -3,7 +3,6 @@ from ui.locators.partner_sites_page_locators import PartnerSitesPageLocators
 from ui.pages.base_page import BasePage
 from ui.pages.partner_add_site_page import PartnerAddSitePage
 from selenium.webdriver.chrome.webdriver import WebDriver
-import time
 
 class SiteStatus(enum.IntEnum):
     ARCHIVED = 1
@@ -35,12 +34,32 @@ class PartnerSitesPage(BasePage):
         self.open_actions_dropdown()
         option = self.find(locator)
         option.click()
-        time.sleep(2)
+
+    def has_nothing_found_caption(self) -> bool:
+        return self.has_element(self.locators.NOTHING_FOUND_CAPTION)
+
+
+    def does_not_have_archived_sites(self) -> bool:
+        return not self.has_element(self.locators.ANY_ARCHIVED_SITE)
 
     def select_site(self, id: int):
         checkbox = self.find(self.locators.SITE_CHECKBOX(id))
         if not checkbox.is_selected():
             checkbox.click()
+
+    def search(self, query: str):
+        input = self.find(self.locators.SITE_SEARCH_INPUT)
+        input.clear()
+        input.send_keys(query)
+
+    def apply_filter(self, site_status: SiteStatus):
+        # removing previous filters if exist
+        if self.has_element(self.locators.CLEAR_ALL_BUTTON):
+            self.click(self.locators.CLEAR_ALL_BUTTON)
+        self.click(self.locators.FILTER_DROPDOWN)
+        locator = self.get_filter_locator_by_status(site_status)
+        self.click(locator)
+        self.click(self.locators.APPLY_FILTER_BUTTON)
 
     def open_actions_dropdown(self):
         if self.has_element(self.locators.ARCHIVE_OPTION):
@@ -55,6 +74,13 @@ class PartnerSitesPage(BasePage):
             return cls.locators.ARCHIVE_OPTION
         elif status == SiteStatus.STOPPED:
             return cls.locators.STOP_OPTION
+
+    @classmethod
+    def get_filter_locator_by_status(cls, status: SiteStatus):
+        if status == SiteStatus.ARCHIVED:
+            return cls.locators.ARCHIVED_FILTER
+        if status == SiteStatus.STOPPED:
+            return cls.locators.STOPPED_FILTER
 
     def get_site_status(self, site_id: int) -> SiteStatus:
         site_status_elem = self.find(self.locators.SITE_STATUS(site_id))
