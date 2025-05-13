@@ -10,6 +10,7 @@ def pytest_addoption(parser):
     parser.addoption('--debug_log', action='store_true')
     parser.addoption('--selenoid', action='store_true')
     parser.addoption('--vnc', action='store_true')
+    parser.addoption('--save-session', action='store_true')
 
 @pytest.fixture(scope='session')
 def config(request):
@@ -25,6 +26,7 @@ def config(request):
     else:
         selenoid = None
         vnc = False
+    save_session = request.config.getoption('--save-session')
 
     dotenv.load_dotenv()
 
@@ -34,6 +36,7 @@ def config(request):
         'debug_log': debug_log,
         'selenoid': selenoid,
         'vnc': vnc,
+        'save_session': save_session
     }
 
 @pytest.fixture(scope='session')
@@ -80,6 +83,10 @@ def advertiser_credentials() -> Tuple[str, str]:
 class Session(TypedDict):
     cookie: Optional[List[Dict[str, str]]]
     local_storage: Optional[Dict[str, str]]
+
+@pytest.fixture(scope='session')
+def load_session_from_file(config) -> bool:
+    return config['save_session']
 
 @pytest.fixture(scope='session')
 def partner_session() -> Session:
