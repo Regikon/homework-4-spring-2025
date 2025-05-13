@@ -1,1 +1,1 @@
-pytest hw/code
+pytest -s hw/code
