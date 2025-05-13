@@ -9,11 +9,15 @@ class MediaLoaderLocators:
         By.XPATH,
         "//div[contains(@class, 'LocalFileSelector_topContent')]//input"
     )
-    IMAGE_CAT_LOGO = (
-        By.XPATH,
-        "//div[contains(@class, 'ImageItem_imageItem')][.//span[text()='logo.jpg']]"
-    )
     BUTTON__SAVE = (
         By.XPATH,
         "//button[.//span[contains(text(), 'Сохранить')]]"
     )
+
+    def image(self, name) -> tuple:
+        return (
+            By.XPATH,
+            f"//div[contains(@class, 'ImageItem_imageItem')][.//span[contains(., '{name}')]]"
+        )
+
+    # TEST_LOGO = (By.XPATH, "//div[contains(@class, 'ImageItem_imageItem')][.//span[contains(., 'logo.jpg')]]")

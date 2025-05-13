@@ -6,7 +6,34 @@ class LeadFormDecorPageLocators:
     INPUT__NAME_ALERT_EMPTY = (By.XPATH, "//span[@role='alert' and contains(., 'Нужно заполнить')]")
 
     INPUT__COMPANY = (By.XPATH, "//input[@placeholder='Название компании']")
-    INPUT__HEADER = (By.XPATH, "//input[@placeholder='Название компании']")
+    INPUT__COMPANY_ALERT_EMPTY = (
+        By.XPATH,
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Название компании')]]//div[contains(., 'Нужно заполнить')]"
+    )
+    INPUT__COMPANY_ALERT_TOO_LONG = (
+        By.XPATH,
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Название компании')]]//div[contains(., 'Сократите')]"
+    )
+
+    INPUT__HEADER = (By.XPATH, "//input[@placeholder='Текст заголовка']")
+    INPUT__HEADER_ALERT_EMPTY = (
+        By.XPATH,
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Заголовок')]]//div[contains(., 'Нужно заполнить')]"
+    )
+    INPUT__HEADER_ALERT_TOO_LONG = (
+        By.XPATH,
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Заголовок')]]//div[contains(., 'Сократите')]"
+    )
+
+    INPUT__DESCRIPTION = (By.XPATH, "//input[@placeholder='Введите описание']")
+    INPUT__DESCRIPTION_ALERT_EMPTY = (
+        By.XPATH,
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Описание')]]//div[contains(., 'Нужно заполнить')]"
+    )
+    INPUT__DESCRIPTION_ALERT_TOO_LONG = (
+        By.XPATH,
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Описание')]]//div[contains(., 'Сократите')]"
+    )
 
     INPUT__LOGO_UPLOAD = (By.XPATH, "//div[@data-testid='set-global-image']")
     INPUT__LOGO_CHANGE = (By.XPATH, "//button[@data-testid='change-image']")
@@ -38,22 +65,50 @@ class LeadFormDecorPageLocators:
         By.XPATH,
         "//*[contains(@class, 'vkuiButton__in') and contains(., 'Сохранить')]"
     )
-    BUTTON__SELECT_LEAD_MAGNIT = (
+
+    BUTTON__SELECT_LEAD_MAGNET = (
         By.XPATH,
-        "//span[text()='Лид-магнит']"
+        "//label[contains(@class, 'vkuiSegmentedControlOption')][.//span[text()='Лид-магнит']]"
     )
     INPUT__SALE = (
         By.XPATH,
         "//input[@value='500']"
     )
+    BUTTON__SWITCH_RUBLE = (
+        By.XPATH,
+        "//*[contains(@class, 'vkuiSegmentedControlOption')][.//*[contains(.,'₽')]]"
+    )
     BUTTON__SWITCH_PERCENT = (
         By.XPATH,
-        "//*[@class='vkuiSegmentedControlOption'][.//*[text()='%']]"
+        "//*[contains(@class, 'vkuiSegmentedControlOption')][.//*[contains(.,'%')]]"
     )
-    INPUT__LOAD_COVER = (
+    INPUT__SALE_ALERT_ZERO = (
         By.XPATH,
-        "//*[contains(@class, 'LocalFileSelector_file')]"
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Размер скидки')]]//div[contains(., 'больше нуля')]"
     )
+    INPUT__SALE_ALERT_TOO_BIG = (
+        By.XPATH,
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Размер скидки')]]//div[contains(., '100%')]"
+    )
+    SWITCH__BONUS = (
+        By.XPATH,
+        "//label[contains(@class, 'vkuiRadio')][.//input[@value='bonus']]"
+    )
+    INPUT__BONUS = (By.XPATH, "//input[@placeholder='Бонус']")
+    INPUT__BONUS_ALERT_EMPTY = (
+        By.XPATH,
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Описание бонуса')]]//div[contains(., 'Нужно заполнить')]"
+    )
+    INPUT__BONUS_ALERT_TOO_LONG = (
+        By.XPATH,
+        "//div[contains(@class, 'vkuiFormItem')][.//*[contains(., 'Описание бонуса')]]//div[contains(., 'Сократите')]"
+    )
+
+    INPUT__COVER_UPLOAD = (
+        By.XPATH,
+        "//span[contains(@class, 'vkuiButton__in')][.//span[contains(., 'Выбрать из медиатеки')]]"
+    )
+    HAS_COVER = (By.XPATH, "//div[contains(@class, 'AdMediaPreview_item')]")
 
     BUTTON__CONTINUE = (
         By.XPATH,
