@@ -118,7 +118,7 @@ class TestAdvertiserSites(BaseCase):
         self.advertiser_sites_page.click(self.advertiser_sites_page.locators.BACK_TO_SITES)
         self.advertiser_sites_page.dell_pixel(self.PIXEL_DOMAIN)
         
-    @pytest.mark.skip('skip')
+    #@pytest.mark.skip('skip')
     def test_add_event_to_pixel(self):
         self.driver.get(AdvertiserSitesPage.url)
         self.advertiser_sites_page =  AdvertiserSitesPage(self.driver)
@@ -154,7 +154,7 @@ class TestAdvertiserSites(BaseCase):
         time.sleep(3)
         self.advertiser_sites_page.click(self.advertiser_sites_page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
         time.sleep(3)
-        self.advertiser_sites_page.click(self.advertiser_sites_page.PIXEL_SETTINGS(self.TAGS_PIXEL_MENU))
+        self.advertiser_sites_page.click(self.advertiser_sites_page.locators.TAGS_PIXEL_MENU)
         time.sleep(3)
         self.advertiser_sites_page.click(self.advertiser_sites_page.locators.CREATE_TAG_BUTTON)
         time.sleep(3)
@@ -181,7 +181,7 @@ class TestAdvertiserSites(BaseCase):
         time.sleep(3)
         self.advertiser_sites_page.click(self.advertiser_sites_page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
         time.sleep(3)
-        self.advertiser_sites_page.click(self.advertiser_sites_page.PIXEL_SETTINGS(self.ACCESS_PIXEL_MENU))
+        self.advertiser_sites_page.click(self.advertiser_sites_page.locators.ACCESS_PIXEL_MENU)
         time.sleep(3)
         self.advertiser_sites_page.click(self.advertiser_sites_page.locators.GIVE_ACCESS_BUTTON)
         time.sleep(3)
