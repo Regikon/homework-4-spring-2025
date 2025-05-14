@@ -12,7 +12,7 @@ def pytest_addoption(parser):
     parser.addoption('--selenoid', action='store_true')
     parser.addoption('--vnc', action='store_true')
     parser.addoption('--save-session', action='store_true')
-    parser.addoption('--window-size', default='2420,1080', help='Window size in format: width,height')
+    parser.addoption('--window-size', default='1920,1080', help='Window size in format: width,height')
 
 @pytest.fixture(scope='session')
 def config(request):
@@ -39,7 +39,7 @@ def config(request):
         'debug_log': debug_log,
         'selenoid': selenoid,
         'vnc': vnc,
-        'save_session': save_session
+        'save_session': save_session,
         'window_size': tuple(map(int, window_size.split(','))),
     }
 

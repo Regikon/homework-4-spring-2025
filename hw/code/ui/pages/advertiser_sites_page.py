@@ -28,7 +28,7 @@ class AdvertiserSitesPage(BasePage):
     def dell_pixel(self, href):
         self.more(href)
         self.click(self.locators.DELL_PIXEL_DROPDOWN)
-        self.click(self.locators.CONFIRM_DELETE, timeout=10)
+        self.click(self.locators.CONFIRM_DELETE, timeout=40)
         self.wait_invisibility(self.locators.DELETE_PIXEL_H2, timeout=40)
 
     def rename_pixel(self, href, new_name):
@@ -107,11 +107,11 @@ class AdvertiserSitesPage(BasePage):
                 continue
         return result
 
-    def select_category(self, visible_text):
+    def select_category(self):
         self.click(self.locators.INPUT_EVENT_CATEGORY)
         self.wait_visibility(self.locators.INPUT_CATEGORY).click()
 
-    def select_condition(self, visible_text):
+    def select_condition(self):
         self.click(self.locators.INPUT_EVENT_CONDITION)
         self.wait_visibility(self.locators.INPUT_CONDITION).click()
     
@@ -128,3 +128,9 @@ class AdvertiserSitesPage(BasePage):
 
     def reload(self):
         ActionChains(self.driver).send_keys(Keys.F5).perform()
+
+    def has_err_in_div(self):
+        return self.has_element(self.locators.DIV_ERROR)
+
+    def cancel_rename(self):
+        self.click(self.locators.DISMISS_RENAME)
