@@ -164,10 +164,10 @@ class AdvertiserSitesPage(BasePage):
         self.sub_element(self.locators.ACCESS_ROW, self.locators.REVOKE_ACCESS_BUTTON)
         self.click(self.locators.REVOKE_ACCESS_CONFIRM_BUTTON)
 
-    def create_and_check_tag(self):
+    def create_and_check_tag(self, tag_name):
         self.click(self.locators.TAGS_PIXEL_MENU)
         self.click(self.locators.CREATE_TAG_BUTTON)
-        self.find(self.locators.TAG_INPUT).send_keys(self.AUDITOR_TAG)
+        self.find(self.locators.TAG_INPUT).send_keys(tag_name)
         self.click(self.locators.TAG_INPUT_BUTTON)
         self.sub_element(self.locators.TAG_ROW, self.locators.SHOW_TAG_BUTTON)
         self.click(self.locators.TAG_CLOSE_BUTTON)

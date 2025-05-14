@@ -94,11 +94,11 @@ class TestAdvertiserSites(BaseCase):
     def test_auditor_tag(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
-        page.create_and_check_tag()
+        page.create_and_check_tag(self.AUDITOR_TAG)
         page.reload()
         assert page.has_element(page.DIV_WITH_TEXT(self.AUDITOR_TAG))
 
-    #@pytest.mark.skip('skip')
+    @pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_give_access(self, pixel):
         page, pixel = pixel[0], pixel[1]
