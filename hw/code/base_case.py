@@ -13,6 +13,8 @@ from utils.local_storage import (get_all_local_storage,
 )
 from selenium.webdriver.chrome.webdriver import WebDriver
 
+from utils.save_session import read_session_from_file, write_session_to_file
+
 class UserType(enum.IntEnum):
     ADVERTISER = 1
     PARTNER = 2
@@ -66,3 +68,4 @@ class BaseCase:
         if self.user == UserType.ADVERTISER:
             return request.getfixturevalue('advertiser_id')
         return request.getfixturevalue('partner_id')
+    

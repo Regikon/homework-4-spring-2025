@@ -1,8 +1,9 @@
-from typing import Dict, List, Optional, Tuple, TypedDict
+from typing import Tuple
 from ui.fixtures import *
 import pytest
 import dotenv
 import os
+from utils.save_session import Session, read_session_from_file, write_session_to_file
 
 def pytest_addoption(parser):
     parser.addoption('--browser', default='chrome')
@@ -10,6 +11,7 @@ def pytest_addoption(parser):
     parser.addoption('--debug_log', action='store_true')
     parser.addoption('--selenoid', action='store_true')
     parser.addoption('--vnc', action='store_true')
+    parser.addoption('--save-session', action='store_true')
 
 @pytest.fixture(scope='session')
 def config(request):
@@ -25,6 +27,7 @@ def config(request):
     else:
         selenoid = None
         vnc = False
+    save_session = request.config.getoption('--save-session')
 
     dotenv.load_dotenv()
 
@@ -34,6 +37,7 @@ def config(request):
         'debug_log': debug_log,
         'selenoid': selenoid,
         'vnc': vnc,
+        'save_session': save_session
     }
 
 @pytest.fixture(scope='session')
@@ -77,22 +81,27 @@ def advertiser_credentials() -> Tuple[str, str]:
         password
     )
 
-class Session(TypedDict):
-    cookie: Optional[List[Dict[str, str]]]
-    local_storage: Optional[Dict[str, str]]
+@pytest.fixture(scope='session')
+def partner_session(config):
+    # Login code is responsible for filling this list
+    session = Session(cookie=None, local_storage=None)
+    if config['save_session']:
+        session_from_file = read_session_from_file('partner_session.json')
+        if session_from_file is not None:
+            session = session_from_file
+    yield session
+    if config['save_session']:
+        write_session_to_file(session, 'partner_session.json')
+    
 
 @pytest.fixture(scope='session')
-def partner_session() -> Session:
+def advertiser_session(config):
     # Login code is responsible for filling this list
-    return {
-        'cookie': None,
-        'local_storage': None
-    }
-
-@pytest.fixture(scope='session')
-def advertiser_session() -> Session:
-    # Login code is responsible for filling this list
-    return {
-        'cookie': None,
-        'local_storage': None
-    }
+    session = Session(cookie=None, local_storage=None)
+    if config['save_session']:
+        session_from_file = read_session_from_file('advertiser_session.json')
+        if session_from_file is not None:
+            session = session_from_file
+    yield session
+    if config['save_session']:
+        write_session_to_file(session, 'advertiser_session.json')

@@ -2,6 +2,8 @@ from ui.components.base_component import BaseComponent
 from ui.locators.partner_site_header_locators import PartnerSiteHeaderLocators
 
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import ActionChains
 
 class PartnerSiteHeader(BaseComponent):
     locators = PartnerSiteHeaderLocators
@@ -11,9 +13,22 @@ class PartnerSiteHeader(BaseComponent):
 
     @property
     def site_name(self):
-        return self.find(self.locators.SITE_NAME_INPUT).text
+        return self.find(self.locators.SITE_NAME).text
 
     @property
     def site_link(self):
         return self.find(self.locators.SITE_LINK).text
 
+    def set_site_name(self, name: str):
+        site_name = self.find(self.locators.SITE_NAME)
+        ActionChains(self.driver)\
+            .click(site_name)\
+            .send_keys(name)\
+            .send_keys(Keys.RETURN)\
+            .perform()
+
+    def is_name_input_active(self):
+        return self.has_element(self.locators.SITE_NAME_INPUT)
+
+    def has_name_too_long_error(self):
+        return self.has_element(self.locators.NAME_TOO_LONG_ERROR)
