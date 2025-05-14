@@ -1,3 +1,4 @@
+from selenium.webdriver.common.by import By
 
 class PartnerSiteAdBlocksPageLocators:
-    pass
+    ADD_AD_BLOCK_BUTTON = (By.XPATH, '//button[contains(., "Добавить блок")]')
