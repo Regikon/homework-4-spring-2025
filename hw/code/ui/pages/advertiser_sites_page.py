@@ -134,3 +134,40 @@ class AdvertiserSitesPage(BasePage):
 
     def cancel_rename(self):
         self.click(self.locators.DISMISS_RENAME)
+
+    def code_pixel_text_correct(self, text):
+        self.click(self.locators.CODE_PIXEL_MENU)
+        self.click(self.locators.DATA_LAYER_SWITCH)
+        self.find(self.locators.DATA_LAYER_INPUT).send_keys(text)
+
+    def create_event(self, event_name):
+        self.click(self.locators.ADD_EVENT_TO_PIXEL)
+        self.find(self.locators.INPUT_EVENT_NAME).send_keys(event_name)
+
+    def url_contains(self, text_to_contain):
+        self.find(self.locators.INPUT_URL_CONTAINS).send_keys(text_to_contain)
+
+    def confirm_creating_event(self):
+        self.click(self.locators.ADD_EVENT_TO_PIXEL_CONFIRM)
+
+    def back_to_sites(self):
+        self.click(self.locators.BACK_TO_SITES)
+    
+    def create_access(self, user_id):
+        self.click(self.locators.ACCESS_PIXEL_MENU)
+        self.click(self.locators.GIVE_ACCESS_BUTTON)
+        self.find(self.locators.ACCESS_INPUT).send_keys(user_id)
+        self.click(self.locators.ACCESS_GIVE_BUTTON)
+        self.click(self.locators.ACCESS_CLOSE_BUTTON)
+
+    def revoke_access(self):
+        self.sub_element(self.locators.ACCESS_ROW, self.locators.REVOKE_ACCESS_BUTTON)
+        self.click(self.locators.REVOKE_ACCESS_CONFIRM_BUTTON)
+
+    def create_and_check_tag(self):
+        self.click(self.locators.TAGS_PIXEL_MENU)
+        self.click(self.locators.CREATE_TAG_BUTTON)
+        self.find(self.locators.TAG_INPUT).send_keys(self.AUDITOR_TAG)
+        self.click(self.locators.TAG_INPUT_BUTTON)
+        self.sub_element(self.locators.TAG_ROW, self.locators.SHOW_TAG_BUTTON)
+        self.click(self.locators.TAG_CLOSE_BUTTON)

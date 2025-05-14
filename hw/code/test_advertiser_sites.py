@@ -57,9 +57,7 @@ class TestAdvertiserSites(BaseCase):
     def test_data_layer_normal(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
-        page.click(page.locators.CODE_PIXEL_MENU)
-        page.click(page.locators.DATA_LAYER_SWITCH)
-        page.find(page.locators.DATA_LAYER_INPUT).send_keys(self.DATA_LAYER_OK)
+        page.code_pixel_text_correct(self.DATA_LAYER_OK)
         assert not page.has_element(page.SPAN_WITH_TEXT(self.ERROR_RUSSIAN))
         assert not page.has_element(page.SPAN_WITH_TEXT(self.INSIDE_ERR))
 
@@ -68,48 +66,35 @@ class TestAdvertiserSites(BaseCase):
     def test_data_layer_russian(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
-        page.click(page.locators.CODE_PIXEL_MENU)
-        page.click(page.locators.DATA_LAYER_SWITCH)
-        page.find(page.locators.DATA_LAYER_INPUT).send_keys(self.DATA_LAYER_RUSSIAN)
+        page.code_pixel_text_correct(self.DATA_LAYER_RUSSIAN)
         assert page.has_element(page.SPAN_WITH_TEXT(self.ERROR_RUSSIAN))
-
 
     #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_data_layer_long(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
-        page.click(page.locators.CODE_PIXEL_MENU)
-        page.click(page.locators.DATA_LAYER_SWITCH)
-        page.find(page.locators.DATA_LAYER_INPUT).send_keys(self.DATA_LAYER_TOO_LONG)
+        page.code_pixel_text_correct(self.DATA_LAYER_TOO_LONG)
         assert page.has_element(page.SPAN_WITH_TEXT(self.INSIDE_ERR))
 
-        
     #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_add_event_to_pixel(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
-        page.click(page.locators.ADD_EVENT_TO_PIXEL)
-        page.find(page.locators.INPUT_EVENT_NAME).send_keys(self.EVENT_NAME)
+        page.create_event(self.EVENT_NAME)
         page.select_category()
         page.select_condition()
-        page.find(page.locators.INPUT_URL_CONTAINS).send_keys(self.URL_CONTAINS)
-        page.click(page.locators.ADD_EVENT_TO_PIXEL_CONFIRM)
+        page.url_contains(self.URL_CONTAINS)
+        page.confirm_creating_event()
         assert page.has_element(page.SPAN_WITH_TEXT(self.EVENT_NAME))
-
 
     #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_auditor_tag(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
-        page.click(page.locators.TAGS_PIXEL_MENU)
-        page.click(page.locators.CREATE_TAG_BUTTON)
-        page.find(page.locators.TAG_INPUT).send_keys(self.AUDITOR_TAG)
-        page.click(page.locators.TAG_INPUT_BUTTON)
-        page.sub_element(page.locators.TAG_ROW, page.locators.SHOW_TAG_BUTTON)
-        page.click(page.locators.TAG_CLOSE_BUTTON)
+        page.create_and_check_tag()
         page.reload()
         assert page.has_element(page.DIV_WITH_TEXT(self.AUDITOR_TAG))
 
@@ -118,19 +103,11 @@ class TestAdvertiserSites(BaseCase):
     def test_give_access(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
-        page.click(page.locators.ACCESS_PIXEL_MENU)
-        page.click(page.locators.GIVE_ACCESS_BUTTON)
-        page.find(page.locators.ACCESS_INPUT).send_keys(self.USER_TO_ACCESS)
-        page.click(page.locators.ACCESS_GIVE_BUTTON)
-        page.click(page.locators.ACCESS_CLOSE_BUTTON)
+        page.create_access(self.USER_TO_ACCESS)
         assert page.has_element(page.SPAN_WITH_TEXT(self.USER_TO_ACCESS))
-        page.sub_element(page.locators.ACCESS_ROW, page.locators.REVOKE_ACCESS_BUTTON)
-        page.click(page.locators.REVOKE_ACCESS_CONFIRM_BUTTON)
+        page.revoke_access()
         page.reload()
         assert not page.has_element(page.DIV_WITH_TEXT(self.USER_TO_ACCESS))
-
-
-
 
 @pytest.fixture(scope='function')
 def pixel(driver, request):
@@ -139,6 +116,6 @@ def pixel(driver, request):
     page = AdvertiserSitesPage(driver)
     page.add_pixel(pixel_domain)
     yield (page, pixel_domain)
-    page.click(page.locators.BACK_TO_SITES)
+    page.back_to_sites()
     page.dell_pixel(pixel_domain)
     page.reload()
