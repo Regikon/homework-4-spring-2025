@@ -1,16 +1,26 @@
 import json
+from typing import Optional, Dict, List, TypedDict
 
-def write_session_to_file(cookies, local_storage, filename='session.json'):
+class Session(TypedDict):
+    cookie: Optional[List[Dict[str, str]]]
+    local_storage: Optional[Dict[str, str]]
+
+def write_session_to_file(session: Session, filename='session.json'):
     with open(filename, 'w') as f:
-        json.dump({'cookies': cookies, 'local_storage': local_storage}, f)
+        json.dump(
+            {
+                'cookie': session['cookie'],
+                'local_storage': session['local_storage']
+            }, f
+        )
 
-def read_session_from_file(filename='session.json'):
+def read_session_from_file(filename='session.json') -> Optional[Session]:
     try:
         with open(filename, 'r') as f:
             session = json.load(f)
-            return {
-                'cookie': session['cookies'],
-                'local_storage': session['local_storage']
-            }
+            return Session(
+                cookie=session['cookie'],
+                local_storage=session['local_storage']
+            )
     except FileNotFoundError:
         return None
