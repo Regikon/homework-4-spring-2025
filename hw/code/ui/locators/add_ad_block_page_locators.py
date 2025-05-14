@@ -31,3 +31,9 @@ class AddAdBlockPageLocators:
     SHOW_INTERVAL_SELECT = (By.XPATH, '//div[contains(@class, "vkuiFormItem")][contains(., "за период")]//input')
 
     SUBMIT_BUTTON = (By.XPATH, '//button[@data-testid="submit"]')
+
+    SITE_SELECT = (By.XPATH, '//div[contains(@class, "vkuiFormItem")][contains(., "Сайт")]//*[contains(@class, "CreatePadForm_input")]')
+
+    @staticmethod
+    def SITE_OPTION(site_id: int):
+        return (By.XPATH, f"//div[contains(@id, '{site_id}')]")

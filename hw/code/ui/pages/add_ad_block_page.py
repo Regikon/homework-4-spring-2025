@@ -3,6 +3,8 @@ from ui.locators.add_ad_block_page_locators import AddAdBlockPageLocators
 from ui.pages.base_page import BasePage
 from utils.re_url import RegExpUrl
 from selenium.webdriver.chrome.webdriver import WebDriver
+from typing import cast
+from parse import Result, parse
 
 
 class AddAdBlockPage(BasePage):
@@ -16,6 +18,15 @@ class AddAdBlockPage(BasePage):
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
         self.cpm_settings = CPMSettings(driver)
+        # Sometimes frontend just doesn't select
+        # the site, so we make sure that the site
+        # is selected manually
+        parsed_url = parse("https://ads.vk.com/hq/partner/sites/{site_id}/blocks",
+                           self.driver.current_url
+        )
+        self.__id = int(cast(Result, parsed_url).named['site_id'])
+        self.click(self.locators.SITE_SELECT)
+        self.click(self.locators.SITE_OPTION(self.__id))
 
     @staticmethod
     def generate_url(site_id: int):

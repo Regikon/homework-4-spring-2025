@@ -10,3 +10,13 @@ class CPMSettingsLocators:
     @staticmethod
     def CPM_INPUT(region_or_country: str):
         return (By.XPATH, f'//div[@role="button"][contains(., "{region_or_country}")]//*[contains(@class, "editableCpmInput_textCpm")]')
+
+    @staticmethod
+    def CPM_INPUT_FIELD(region_or_country: str):
+        return (By.XPATH, f'//div[@role="button"][contains(., "{region_or_country}")]//input')
+
+    NO_CPM_LABEL = (By.XPATH, '//*[contains(text(), "CPM не задан")]')
+
+    SEARCH_INPUT = (By.XPATH, '//*[contains(@class, "CpmSettings_search__")]//input')
+
+    ONLY_SET_CPMS_CHECKBOX = (By.XPATH, '//*[contains(@class,"CpmSettings_edited_")]')
