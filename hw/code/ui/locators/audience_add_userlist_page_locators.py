@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-class AudienceAddUserlistPageLocators:
+class AudienceAddUserlistPageLocators: 
     ADD_NEW_USERLIST_BUTTON = (By.XPATH, '//div[contains(@class, "vkuiTabsItem")][.//*[contains(., "Создать новый")]]')
     ADD_TO_EXISTING_USERLIST_BUTTON = (By.XPATH, '//div[contains(@class, "vkuiTabsItem")][.//*[contains(., "Добавить в существующий")]]')
     EXCLUDE_FROM_USERLIST_BUTTON = (By.XPATH, '//div[contains(@class, "vkuiTabsItem")][.//*[contains(., "Исключить из существующего")]]')
@@ -16,4 +16,3 @@ class AudienceAddUserlistPageLocators:
     ADD_NEW_AUDIENCE_CHECKBOX = (By.XPATH, '//label[contains(@class, "vkuiCheckbox")][.//*[contains(., "Создать новую аудиторию")]]')
 
     SAVE_BUTTON = (By.XPATH, '//button[contains(.,"Сохранить")]')
-

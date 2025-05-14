@@ -1,9 +1,9 @@
 from ui.pages.base_page import BasePage
 from ui.locators.audience_page_locators import AudiencePageLocators
 from ui.pages.audience_add_userlist_page import AudienceAddUserlistPage
+from ui.pages.audience_add_offline_conversion_page import AudienceAddOfflineConversionPage
 from selenium.webdriver.common.action_chains import ActionChains
 import re
-from time import sleep
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 
@@ -19,11 +19,19 @@ class AudiencePage(BasePage):
         self.click(self.locators.ADD_LIST_BUTTON)
         return AudienceAddUserlistPage(self.driver)
     
+    def go_to_add_offline_conversion_page(self) -> AudienceAddOfflineConversionPage:
+        self.click(self.locators.OFFLINE_CONVERSION_SECTION)
+        self.click(self.locators.ADD_LIST_BUTTON)
+        return AudienceAddOfflineConversionPage(self.driver)
+    
     def go_to_userlist(self) -> AudienceAddUserlistPage:
         self.click(self.locators.USERLIST_SECTION)
 
     def has_userlist_with_name(self, name: str) -> bool:
         return self.has_element(self.locators.USERLIST_BY_NAME(name))
+    
+    def has_offline_conversion_with_name(self, name: str) -> bool:
+        return self.has_element(self.locators.OFFLINE_CONVERSION_BY_NAME(name))
     
     def get_current_identifier(self) -> float:
         status = self.find(self.locators.STATUS)

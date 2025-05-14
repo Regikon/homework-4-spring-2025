@@ -5,6 +5,10 @@ class AudiencePageLocators:
     def USERLIST_BY_NAME(name: str):
         return (By.XPATH, f'//div[@id="audience.users_list"]//div[contains(@class, "EditableName_nameValue__") and normalize-space(text())="{name}"]')
     
+    @staticmethod
+    def OFFLINE_CONVERSION_BY_NAME(name: str):
+        return (By.XPATH, f'//div[@id="audience.offline_conversion"]//div[contains(@class, "EditableName_nameValue__") and normalize-space(text())="{name}"]')
+    
     AUDIENCE_SECTION = (By.XPATH, '//div[@id="tab_audience"]')
     USERLIST_SECTION = (By.XPATH, '//div[@id="tab_audience.users_list"]')
     OFFLINE_CONVERSION_SECTION = (By.XPATH, '//div[@id="tab_audience.offline_conversion"]')

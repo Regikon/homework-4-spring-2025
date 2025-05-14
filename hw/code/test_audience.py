@@ -62,46 +62,68 @@ class TestAddAudience(BaseCase):
 
     @pytest.mark.skip('skip')
     def test_add_userlist_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_exclude_userlist_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_add_existing_audience_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_add_event_from_announcements_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_add_mobile_category_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_add_event_from_lead_form_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_add_key_phrases_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_add_subscribers_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_add_listeners_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_add_vk_mini_apps_source(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
     @pytest.mark.skip('skip')
     def test_delete_audience(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
 
 class TestAddOfflineConversion(BaseCase):
@@ -109,8 +131,18 @@ class TestAddOfflineConversion(BaseCase):
 
     @pytest.mark.skip('skip')
     def test_add_new_offline_conversion(self):
-        pass
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
+        add_offline_conversion_page = audience_page.go_to_add_offline_conversion_page()
+        add_offline_conversion_page.choose_create_new_list()
+        add_offline_conversion_page.set_list_name("conversion_users_plain_phones")
+        add_offline_conversion_page.set_list_type()
+        add_offline_conversion_page.upload_file(os.path.abspath("hw/code/files/conversion_users_plain_phones.csv"))
+        add_offline_conversion_page.click_save_button()
+        assert audience_page.has_offline_conversion_with_name("conversion_users_plain_phones")
 
     @pytest.mark.skip('skip')
     def test_add_to_existing_offline_conversion(self):
+        self.driver.get(AudiencePage.url)
+        audience_page = AudiencePage(self.driver)
         pass
