@@ -3,6 +3,8 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from ui.entities.partner_site import PartnerSite
+from typing import List
 
 @pytest.fixture()
 def driver(config):
@@ -51,3 +53,27 @@ def all_drivers(config, request):
     browser.get(url)
     yield browser
     browser.quit()
+
+VALID_SITE_LINK = 'uart.site'
+
+# I tried to make this class scoped fixture,
+# but since driver is a function scoped fixture,
+# we cannot have site with the same driver for
+# all the test
+@pytest.fixture(scope='function')
+def two_sites():
+    driver = get_default_driver()
+    sites: List[PartnerSite] = []
+    sites.append(PartnerSite.with_random_name(VALID_SITE_LINK, driver))
+    sites.append(PartnerSite.with_random_name(VALID_SITE_LINK, driver))
+    yield sites
+    for site in sites:
+        site.remove(driver)
+
+@pytest.fixture(scope='function')
+def one_site(driver):
+    site = PartnerSite.with_random_name(VALID_SITE_LINK, driver)
+    yield site
+    site.remove(driver)
+
+
