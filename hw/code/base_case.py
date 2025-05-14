@@ -31,15 +31,11 @@ class BaseCase:
         if self.user is not None:
             # We need to login
             session = self.__extract_session(request)
-            if request.getfixturevalue('load_session_from_file'):
-                session = self.__read_session_from_file()
-                
             if session['cookie'] is None or session['local_storage'] is None:
                 user_id = self.__get_user_id(request)
                 self.__login(user_id)
                 session['cookie'] = self.driver.get_cookies()
                 session['local_storage'] = get_all_local_storage(self.driver)
-                self.__write_session_to_file(session['cookie'], session['local_storage'])
             else:
                 for cookie in session['cookie']:
                     self.driver.add_cookie(cookie)
@@ -73,13 +69,3 @@ class BaseCase:
             return request.getfixturevalue('advertiser_id')
         return request.getfixturevalue('partner_id')
     
-    def __read_session_from_file(self):
-        if self.user == UserType.ADVERTISER:
-            return read_session_from_file('advertiser_session.json')
-        return read_session_from_file('partner_session.json')
-    
-    def __write_session_to_file(self, cookies, local_storage):
-        if self.user == UserType.ADVERTISER:
-            write_session_to_file(cookies, local_storage, 'advertiser_session.json')
-        else:
-            write_session_to_file(cookies, local_storage, 'partner_session.json')
