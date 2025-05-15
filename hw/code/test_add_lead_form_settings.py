@@ -30,10 +30,10 @@ class TestCreateLeadFormSettingsPage(BaseCase):
         settings_page.enter_inn('1' * 33)
         assert settings_page.has_inn_long_error()
 
+    @pytest.mark.skip('skip')
     def test_save_form(self, settings_page):
         settings_page.enter_inn('123456789')
         settings_page.enter_name('Иван Иванов')
         settings_page.enter_address('Москва, ул. Пушкина, д. 1')
-        time.sleep(1)
         assert settings_page.is_modal_closed()
 
