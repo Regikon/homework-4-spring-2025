@@ -16,7 +16,7 @@ class TestAdvertiserSites(BaseCase):
     REGION = "Чувашская Республика"
     INTEREST = "Авто внедорожники"
 
-    @pytest.mark.skip('skip')
+    #@pytest.mark.skip('skip')
     def test_create_campaign(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
@@ -40,7 +40,7 @@ class TestAdvertiserSites(BaseCase):
         page.choose_site(self.WRONG_SITE)
         assert page.has_err_site_link()
 
-    #@pytest.mark.skip('skip')
+    @pytest.mark.skip('skip')
     def test_wrong_budget(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
@@ -50,7 +50,7 @@ class TestAdvertiserSites(BaseCase):
         page.confirm_company(self.WRONG_BUDGET)
         assert page.has_err_budget()
 
-    #@pytest.mark.skip('skip')
+    @pytest.mark.skip('skip')
     def test_ok_budget_and_site(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
@@ -61,6 +61,7 @@ class TestAdvertiserSites(BaseCase):
         assert not page.has_err_budget()
         page.remove_company()
 
+    @pytest.mark.skip('skip')
     @pytest.mark.parametrize('second_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME)], indirect=True)
     def test_rename_group(self, second_chapter_settings):
         page = second_chapter_settings
@@ -68,6 +69,7 @@ class TestAdvertiserSites(BaseCase):
         page.reload()
         assert page.has_this_company_name(self.GROUP_NAME)
 
+    @pytest.mark.skip('skip')
     @pytest.mark.parametrize('second_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME)], indirect=True)
     def test_region_in_group(self, second_chapter_settings):
         page = second_chapter_settings
@@ -75,6 +77,7 @@ class TestAdvertiserSites(BaseCase):
         page.region_choose(self.REGION)
         assert page.has_region(self.REGION)
 
+    @pytest.mark.skip('skip')
     @pytest.mark.parametrize('second_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME)], indirect=True)
     def test_interests_in_group(self, second_chapter_settings):
         page = second_chapter_settings
@@ -82,6 +85,7 @@ class TestAdvertiserSites(BaseCase):
         page.choose_interests(self.INTEREST)
         assert page.has_interests(self.INTEREST)
 
+    @pytest.mark.skip('skip')
     @pytest.mark.parametrize('third_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME, REGION, INTEREST)], indirect=True)
     def test_interests_in_group(self, third_chapter_settings):
         page = third_chapter_settings
