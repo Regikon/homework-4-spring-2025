@@ -10,6 +10,8 @@ class AdBlockHeader(BaseComponent):
 
     def __init__(self, driver: WebDriver) -> None:
         super().__init__(driver)
+        # This guaranties the header to be loaded
+        self.find(self.locators.GET_CODE_BUTTON)
 
     @property
     def block_name(self):
