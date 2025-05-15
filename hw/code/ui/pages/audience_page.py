@@ -1,6 +1,7 @@
 from ui.pages.base_page import BasePage
 from ui.locators.audience_page_locators import AudiencePageLocators
 from ui.pages.audience_add_userlist_page import AudienceAddUserlistPage
+from ui.pages.audience_add_audience_page import AudienceAddAudiencePage
 from ui.pages.audience_add_offline_conversion_page import AudienceAddOfflineConversionPage
 from selenium.webdriver.common.action_chains import ActionChains
 import re
@@ -24,11 +25,18 @@ class AudiencePage(BasePage):
         self.click(self.locators.ADD_LIST_BUTTON)
         return AudienceAddOfflineConversionPage(self.driver)
     
+    def go_to_add_audience_page(self) -> AudienceAddAudiencePage:
+        self.click(self.locators.ADD_AUDIENCE_BUTTON)
+        return AudienceAddAudiencePage(self.driver)
+    
     def go_to_userlist(self) -> AudienceAddUserlistPage:
         self.click(self.locators.USERLIST_SECTION)
 
     def has_userlist_with_name(self, name: str) -> bool:
         return self.has_element(self.locators.USERLIST_BY_NAME(name))
+    
+    def has_audience_with_name(self, name: str) -> bool:
+        return self.has_element(self.locators.AUDIENCE_BY_NAME(name))
     
     def has_offline_conversion_with_name(self, name: str) -> bool:
         return self.has_element(self.locators.OFFLINE_CONVERSION_BY_NAME(name))
@@ -51,6 +59,16 @@ class AudiencePage(BasePage):
         delete_button = self.find(self.locators.DELETE_BUTTON)
         delete_button.click()
         delete_confirm_button = self.find(self.locators.DELETE_CONFIRM_BUTTON)
+        delete_confirm_button.click()
+
+    def delete_audience(self, name: str):
+        userlist = self.find(self.locators.AUDIENCE_BY_NAME(name))
+        ActionChains(self.driver).move_to_element(userlist).perform()
+        menu = self.find(self.locators.AUDIENCE_MENU_BUTTON)
+        ActionChains(self.driver).move_to_element(menu).click(menu).perform()
+        delete_button = self.find(self.locators.DELETE_BUTTON)
+        delete_button.click()
+        delete_confirm_button = self.find(self.locators.DELETE_AUDIENCE_CONFIRM_BUTTON)
         delete_confirm_button.click()
 
     def has_success_message(self) -> bool:
