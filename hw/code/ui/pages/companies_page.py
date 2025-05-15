@@ -22,7 +22,10 @@ class CompaniesPage(BasePage):
     def create_campaign(self):
         if self.has_element(self.locators.CLOSE_SOME_ADS):
             self.click(self.locators.CLOSE_SOME_ADS)
-        self.click(self.locators.CREATE_CAMPAIGN_BUTTON)
+        if self.has_element(self.locators.CREATE_CAMPAIGN_BUTTON_ALT):
+            self.click(self.locators.CREATE_CAMPAIGN_BUTTON_ALT)
+        else:
+            self.click(self.locators.CREATE_CAMPAIGN_BUTTON)
 
     def choose_site(self, url: str):
         self.click(self.locators.CHOOSE_SITE_BUTTON)
@@ -35,7 +38,7 @@ class CompaniesPage(BasePage):
         price_input.send_keys(price)
         price_input.send_keys(Keys.ENTER)
 
-    def (self, price, first=True):
+    def confirm_company(self, price, first=True):
         if first:
             self.wait_visibility(self.locators.WAIT_FOR_ERROR_DIV)
             self.wait_invisibility(self.locators.WAIT_FOR_ERROR_DIV)

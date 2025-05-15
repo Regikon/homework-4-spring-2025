@@ -23,7 +23,7 @@ class TestAdvertiserSites(BaseCase):
         page.create_campaign()
         assert page.has_main_panel()
 
-    #@pytest.mark.skip('skip')
+    @pytest.mark.skip('skip')
     def test_rename_campaign(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
@@ -40,7 +40,7 @@ class TestAdvertiserSites(BaseCase):
         page.choose_site(self.WRONG_SITE)
         assert page.has_err_site_link()
 
-    @pytest.mark.skip('skip')
+    #@pytest.mark.skip('skip')
     def test_wrong_budget(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
@@ -86,12 +86,11 @@ class TestAdvertiserSites(BaseCase):
         assert page.has_interests(self.INTEREST)
 
     @pytest.mark.skip('skip')
-    @pytest.mark.parametrize('third_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME, REGION, INTEREST)], indirect=True)
-    def test_interests_in_group(self, third_chapter_settings):
+    @pytest.mark.parametrize('third_chapter_settings', [(SITE, OK_BUDGET, ANNOUNCEMENT_NAME, REGION, INTEREST)], indirect=True)
+    def test_announcement_rename(self, third_chapter_settings):
         page = third_chapter_settings
-        page.rename_any(self.GROUP_NAME)
-        page.choose_interests(self.INTEREST)
-        assert page.has_interests(self.INTEREST)
+        page.rename_any(self.ANNOUNCEMENT_NAME)
+        assert page.has_this_company_name(self.ANNOUNCEMENT_NAME)
 
 @pytest.fixture(scope='function')
 def second_chapter_settings(driver, request):
