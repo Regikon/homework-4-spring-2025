@@ -19,5 +19,3 @@ class MediaLoaderLocators:
             By.XPATH,
             f"//div[contains(@class, 'ImageItem_imageItem')][.//span[contains(., '{name}')]]"
         )
-
-    # TEST_LOGO = (By.XPATH, "//div[contains(@class, 'ImageItem_imageItem')][.//span[contains(., 'logo.jpg')]]")

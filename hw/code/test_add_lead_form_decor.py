@@ -77,7 +77,8 @@ class TestCreateLeadFormDecorPage(BaseCase):
         decor_page.enter_bonus('a' * 31)
         assert decor_page.has_lead_magnet_bonus_long_error()
 
-    # def test_go_to_questions_page(self, decor_page):
-    #     decor_page.click_continue()
-    #     assert decor_page.has_questions_page()
+    @pytest.mark.skip('skip')
+    def test_go_to_questions_page(self, decor_page):
+        decor_page.click_continue()
+        assert decor_page.has_questions_page()
     

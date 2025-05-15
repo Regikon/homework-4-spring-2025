@@ -17,7 +17,6 @@ class MediaLoader(BaseComponent):
     
     def select_image(self, name):
         image_locator = self.locators.image(name)
-        print(image_locator)
         self.click(image_locator)
         time.sleep(3) # it's really necessary
         self.click(self.locators.BUTTON__SAVE)
