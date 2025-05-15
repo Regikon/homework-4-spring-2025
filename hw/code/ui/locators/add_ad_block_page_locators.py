@@ -7,6 +7,7 @@ class AddAdBlockPageLocators:
     NAME_ERROR = (By.XPATH, '//*[contains(., "Название рекламного блока")]//span[@role="alert"]')
 
     DISPLAY_BLOCK_OPTION = (By.XPATH, '//*[@data-value="banner"]')
+    AMP_DISPLAY_BLOCK_OPTION = (By.XPATH, '//*[@data-value="amp"]')
     RECOMMEND_WIDGET_OPTION = (By.XPATH, '//*[@data-value="recomend"]')
     INSTREAM_VIDEO_OPTION = (By.XPATH, '//*[@data-value="instream]')
 
@@ -18,8 +19,8 @@ class AddAdBlockPageLocators:
 
     DESIGN_SETTINGS_BUTTON = (By.XPATH, '//button[contains(., "Настроить дизайн")]')
 
-    DIRECT_INTEGRATION_RADIOBUTTON = (By.XPATH, '//input[@value="js_sdk"]')
-    HEADER_BIDDING_INTEGRATION_RADIOBUTTON = (By.XPATH, '//input[@value="header_bidding"]')
+    DIRECT_INTEGRATION_RADIOBUTTON = (By.XPATH, '//input[@value="js_sdk"]/..')
+    HEADER_BIDDING_INTEGRATION_RADIOBUTTON = (By.XPATH, '//input[@value="header_bidding"]/..')
 
     AUTO_CPM_RADIOBUTTON = (By.XPATH, '//input[@value="auto"]/..')
     MANUAL_CPM_RADIOBUTTON = (By.XPATH, '//input[@value="manual"]/..')
@@ -28,7 +29,10 @@ class AddAdBlockPageLocators:
 
     SHOW_LIMIT_SELECT = (By.XPATH, '//div[contains(@class, "vkuiFormItem")][contains(., "Лимит показов")]//input')
     SHOW_PERIOD_SELECT = (By.XPATH, '//div[contains(@class, "vkuiFormItem")][contains(., "за период")]//input')
-    SHOW_INTERVAL_SELECT = (By.XPATH, '//div[contains(@class, "vkuiFormItem")][contains(., "за период")]//input')
+    SHOW_INTERVAL_SELECT = (By.XPATH, '//div[contains(@class, "vkuiFormItem")][contains(., "Интервал")]//input')
+    @staticmethod
+    def SELECT_OPTION(id: str):
+        return (By.XPATH, f'//*[@role="option"][contains(@id, {id})]')
 
     SUBMIT_BUTTON = (By.XPATH, '//button[@data-testid="submit"]')
 
