@@ -118,7 +118,6 @@ class LeadFormDecorPageLocators:
 class LeadFormPageLocators:
     BUTTON__CREATE_NEW = (By.XPATH, "//button[contains(., 'Создать лид-форму')]")
     
-
     BUTTON__ADD_QUESTION = (
         By.XPATH,
         "//*[contains(@class, 'vkuiButton__in') and contains(., 'Добавить вопрос')]"
@@ -139,4 +138,5 @@ class LeadFormPageLocators:
         By.XPATH,
         "//button[@aria-label='Remove']"
     )
+
 

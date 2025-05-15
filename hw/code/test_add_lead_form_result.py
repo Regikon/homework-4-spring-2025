@@ -3,7 +3,6 @@ from base_case import BaseCase, UserType
 
 from ui.pages.advertiser_leadforms_page import LeadFormsPage
 from ui.pages.advertiser_lead_form_decor_page import LeadFormDecorPage
-from ui.pages.advertiser_lead_form_result_page import LeadFormResultPage
 
 class TestCreateLeadFormResultPage(BaseCase):
     user = UserType.ADVERTISER

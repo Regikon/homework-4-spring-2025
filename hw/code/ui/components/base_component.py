@@ -16,7 +16,7 @@ class BaseComponent(object):
         Get WebDriverWait object with given timeout
         """
         if timeout is None:
-            timeout = 15
+            timeout = 5
         return WebDriverWait(self.driver, timeout=timeout)
 
     def find(self, locator, timeout=None) -> WebElement:

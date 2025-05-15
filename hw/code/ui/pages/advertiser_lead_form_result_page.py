@@ -1,5 +1,6 @@
 from ui.locators.lead_form_result_page_locators import LeadFormResultPageLocators
 from ui.pages.base_page import BasePage
+from ui.pages.advertiser_lead_form_settings import LeadFormSettingsPage
 
 
 class LeadFormResultPage(BasePage):
@@ -62,4 +63,4 @@ class LeadFormResultPage(BasePage):
 
     def go_to_settings_page(self):
         self.click(self.locators.CONTINUE)
-        return #LeadFormSettingsPage(self.driver)
+        return LeadFormSettingsPage(self.driver)
