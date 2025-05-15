@@ -1,5 +1,6 @@
 from typing import cast
 from ui.locators.partner_site_ad_blocks_page_locators import PartnerSiteAdBlocksPageLocators
+from ui.pages.add_ad_block_page import AddAdBlockPage
 from ui.pages.base_page import BasePage
 from ui.components.partner_site_header import PartnerSiteHeader
 from utils.re_url import RegExpUrl
@@ -27,3 +28,7 @@ class PartnerSiteAdBlocksPage(BasePage):
     @property
     def site_id(self) -> int:
         return self.__id
+
+    def go_to_add_block_page(self) -> AddAdBlockPage:
+        self.click(self.locators.ADD_AD_BLOCK_BUTTON)
+        return AddAdBlockPage(self.driver)
