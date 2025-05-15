@@ -115,6 +115,7 @@ class TestPartnerSites(BaseCase):
         first_site = two_sites[0]
         second_site = two_sites[1]
         sites_page.search(first_site.name)
+        sites_page.wait_site_to_disappear(second_site.id)
         assert sites_page.has_site_with_id(first_site.id)
         assert not sites_page.has_site_with_id(second_site.id)
 

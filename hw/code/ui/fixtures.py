@@ -2,7 +2,9 @@ import pytest
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium import webdriver
+from selenium.webdriver.chrome.webdriver import WebDriver
 from webdriver_manager.chrome import ChromeDriverManager
+from ui.entities.ad_block import AdBlock, AdBlockSettings
 from ui.entities.partner_site import PartnerSite
 from typing import List
 
@@ -55,14 +57,72 @@ def all_drivers(config, request):
     browser.quit()
 
 VALID_SITE_LINK = 'uart.site'
+VALID_BLOCK_SETTINGS: AdBlockSettings = {
+    'is_amp': False,
+        'name': 'my first block',
+        'format': 'display_block',
+        'size': '300x600',
+        'design': {
+            'frame': {
+                'frame': "solid",
+                'color': "#ff0000"
+            },
+            'header': {
+                'color': "#00ff00",
+                'link_color': "#0000ff",
+                'font': "Verdana",
+                'link_underline': 'underline'
+            },
+            'text': {
+                'font': "Tahoma",
+                'color': '#fffff1',
+            },
+            'button': {
+                'font': 'Arial',
+                'background_color': '#00abf1',
+                'text_color': '#ff00ff'
+            }
+        },
+        'integration_type': 'direct',
+        'cpm': {
+            'general_limit': '20',
+            'country_cpms': [{
+                'country': 'Танзания',
+                'value': '200',
+                'region': 'Африка'
+            }],
+            'region_cpms': [
+                {
+                    'region': 'Европа',
+                    'value': '10000'
+                }
+            ]
+        },
+        'call_code': 'elelbobo',
+        'show_limit': 26,
+        'period': 'week',
+        'interval': 24
+    }
+ANOTHER_VALID_BLOCK_SETTINGS: AdBlockSettings = {
+    'name': 'Мой рекомендательный виджет',
+    'format': 'recommend_widget',
+    'cpm': None,
+    'show_limit': 0,
+    'period': 'day',
+    'interval': 0,
+    'call_code': None,
+    'size': None,
+    'design': None,
+    'is_amp': False,
+    'integration_type': None
+}
 
 # I tried to make this class scoped fixture,
 # but since driver is a function scoped fixture,
 # we cannot have site with the same driver for
 # all the test
 @pytest.fixture(scope='function')
-def two_sites():
-    driver = get_default_driver()
+def two_sites(driver):
     sites: List[PartnerSite] = []
     sites.append(PartnerSite.with_random_name(VALID_SITE_LINK, driver))
     sites.append(PartnerSite.with_random_name(VALID_SITE_LINK, driver))
@@ -76,4 +136,17 @@ def one_site(driver):
     yield site
     site.remove(driver)
 
+@pytest.fixture(scope='function')
+def one_ad_block(driver: WebDriver, one_site: PartnerSite):
+    block = AdBlock(one_site.id, VALID_BLOCK_SETTINGS, driver)
+    yield block
+    block.remove(driver)
 
+@pytest.fixture(scope='function')
+def two_ad_blocks(driver: WebDriver, one_site: PartnerSite):
+    blocks: List[AdBlock] = []
+    blocks.append(AdBlock(one_site.id, ANOTHER_VALID_BLOCK_SETTINGS, driver))
+    blocks.append(AdBlock(one_site.id, VALID_BLOCK_SETTINGS, driver))
+    yield blocks
+    for block in blocks:
+        block.remove(driver)
