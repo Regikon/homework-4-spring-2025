@@ -341,6 +341,7 @@ class TestAdBlocks(BaseCase):
         first = two_ad_blocks[0]
         second = two_ad_blocks[1]
         blocks_page.search(first.name)
+        blocks_page.wait_to_block_to_disappear(second.id)
         assert blocks_page.has_block_with_id(first.id)
         assert not blocks_page.has_block_with_id(second.id)
 

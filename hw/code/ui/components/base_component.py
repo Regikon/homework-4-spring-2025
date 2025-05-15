@@ -2,8 +2,10 @@ from typing import List
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.wait import POLL_FREQUENCY, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+import time
 
 class BaseComponent(object):
     locators = None
@@ -41,3 +43,11 @@ class BaseComponent(object):
             return True
         except Exception:
             return False
+
+    def wait_till_element_disappears(self, locator, timeout=5):
+        started = time.time()
+        while time.time() - started < timeout:
+            if not self.has_element(locator, POLL_FREQUENCY):
+                return True
+        raise RuntimeError("Element still on the page")
+

@@ -37,6 +37,9 @@ class PartnerSiteAdBlocksPage(BasePage):
         self.click(self.locators.ADD_AD_BLOCK_BUTTON)
         return AddAdBlockPage(self.driver)
 
+    def wait_to_block_to_disappear(self, id: int):
+        self.wait_till_element_disappears(self.locators.BLOCK_ENTRY(id))
+
     def has_block_with_id(self, id: int) -> bool:
         return self.has_element(self.locators.BLOCK_ENTRY(id))
 
