@@ -18,7 +18,7 @@ class AdvertiserSitesPage(BasePage):
         self.driver.set_window_size(2620, 1080)
 
     def add_pixel(self, href):
-        self.click(self.locators.ADD_PIXEL)
+        self.click(self.locators.ADD_PIXEL, timeout=20)
         self.find(self.locators.DOMAIN).send_keys(href)
         self.click(self.locators.ADD_PIXEL_IN_MODAL, timeout=10)
         self.click(self.locators.IGNORE_AND_CREATE_NEW)
