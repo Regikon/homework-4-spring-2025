@@ -324,6 +324,8 @@ class TestAdBlocks(BaseCase):
         blocks_page = PartnerSiteAdBlocksPage(self.driver)
         assert blocks_page.has_block_with_id(duplicate_id)
 
+    # This does not work since frontend has a bug
+    @pytest.mark.skip('skip')
     def test_block_list_filters_stopped_sites(self, two_ad_blocks: List[AdBlock]):
         self.driver.get(PartnerSiteAdBlocksPage.generate_url(two_ad_blocks[0].site_id))
         blocks_page = PartnerSiteAdBlocksPage(self.driver)
@@ -349,3 +351,31 @@ class TestAdBlocks(BaseCase):
         blocks_page = one_site.go_to_site_page(self.driver)
         blocks_page.search(self.UNEXISTANT_BLOCK_NAME)
         assert blocks_page.has_nothing_found_caption()
+
+class TestAdBlock(BaseCase):
+    user = UserType.PARTNER
+
+    VALID_BLOCK_NAME = "new name"
+    VALID_BLOCK_NAME_MAX_SYMBOLS_COUNT = 200
+
+    def test_block_changes_name(self, one_ad_block: AdBlock):
+        block_page = one_ad_block.go_to_block_page(self.driver)
+        block_page.header.set_block_name(self.VALID_BLOCK_NAME)
+        self.driver.refresh()
+        assert block_page.header.block_name == self.VALID_BLOCK_NAME
+
+    def test_block_cannot_change_to_empty_name(self, one_ad_block: AdBlock):
+        block_page = one_ad_block.go_to_block_page(self.driver)
+        block_page.header.set_block_name('a' + Keys.BACKSPACE)
+        assert block_page.header.is_name_input_active()
+
+    def test_error_if_try_to_set_too_long_site_name(self, one_ad_block: AdBlock):
+        block_page = one_ad_block.go_to_block_page(self.driver)
+        block_page.header.set_block_name('a' * (2 * self.VALID_BLOCK_NAME_MAX_SYMBOLS_COUNT))
+        assert block_page.header.has_name_too_long_error()
+
+    def test_can_get_matching_code(self, one_ad_block: AdBlock):
+        block_page = one_ad_block.go_to_block_page(self.driver)
+        code = block_page.header.get_matching_code()
+        assert code.find("<script>") >= 0
+

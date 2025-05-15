@@ -1,3 +1,4 @@
+from ui.components.ad_block_header import AdBlockHeader
 from ui.pages.base_page import BasePage
 from ui.locators.ad_block_page_locators import AdBlockPageLocators
 from utils.re_url import RegExpUrl
@@ -17,6 +18,7 @@ class AdBlockPage(BasePage):
         parsed_url = parse("https://ads.vk.com/hq/partner/sites/{site_id}/blocks/{block_id}", url)
         self.__site_id = int(cast(Result, parsed_url).named['site_id'])
         self.__id = int(cast(Result, parsed_url).named['block_id'])
+        self.header = AdBlockHeader(self.driver)
 
     @staticmethod
     def generate_url(site_id: int, block_id: int):
