@@ -1,4 +1,5 @@
 import pytest
+from ui.pages.advertiser_lead_form_result_page import LeadFormResultPage
 from ui.pages.base_page import BasePage
 from ui.locators.lead_form_questions_locators import LeadFormQuestionsLocators
 
@@ -56,5 +57,6 @@ class LeadFormQuestionPage(BasePage):
     def has_contact_city_on_preview(self):
         return self.has_element(self.locators.HAS_CONTACTS_CITY_ON_PREVIEW)
     
-    def fill_question_page(self):
-        pass
+    def go_to_result_page(self):
+        self.click(self.locators.CONTINUE)
+        return LeadFormResultPage(self.driver)

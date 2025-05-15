@@ -47,3 +47,8 @@ class BaseComponent(object):
         input.clear()
         input.send_keys(text)
         input.submit()
+    
+    def input_write_without_submit(self, locator, text):
+        input = self.find(locator)
+        input.clear()
+        input.send_keys(text)
