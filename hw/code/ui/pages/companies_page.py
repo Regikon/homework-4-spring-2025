@@ -77,7 +77,8 @@ class CompaniesPage(BasePage):
         return self.has_element(self.locators.CHOOSE_SITE_BUTTON)
 
     def has_this_company_name(self, name: str) -> bool:
-        return self.has_element(self.locators.COMPANY_NAME(name))
+        self.reload()
+        return self.has_element(self.locators.COMPANY_NAME(name), timeout=10)
 
     def has_err_site_link(self) -> bool:
         return self.has_element(self.locators.INVALID_SITE_LINK_ERROR)

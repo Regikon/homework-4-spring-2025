@@ -3,8 +3,9 @@ from ui.locators.audience_add_audience_page_locators import AudienceAddAudienceP
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 import re
-
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.support.wait import WebDriverWait
 
 class AudienceAddAudiencePage(BasePage):
     url = 'https://ads.vk.com/hq/audience'
@@ -63,12 +64,20 @@ class AudienceAddAudiencePage(BasePage):
         listeners_source_button.click()
 
     def choose_vk_mini_apps_source(self):
+        self.wait_visibility(self.locators.VK_MINI_APPS_SOURCE_BUTTON)
         vk_mini_apps_source_button = self.find(self.locators.VK_MINI_APPS_SOURCE_BUTTON)
         vk_mini_apps_source_button.click()
 
     def create_new_list(self):
+        self.wait_visibility(self.locators.CREATE_NEW_LIST)
         create_new_list_button = self.find(self.locators.CREATE_NEW_LIST)
         create_new_list_button.click()
+    
+    def wait_visibility(self, locator, timeout=15):
+        return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
+
+    def wait_visibility_real(self, locator, timeout=15):
+        return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     def set_list_name(self, new_name: str):
         list_name_input = self.find(self.locators.LIST_NAME_INPUT)
@@ -96,6 +105,15 @@ class AudienceAddAudiencePage(BasePage):
         save_button = self.find(self.locators.SAVE_IN_MODAL_BUTTON)
         save_button.click()
 
+    def click_save_button_in_modal_wait(self):
+        save_button = self.find(self.locators.SAVE_IN_MODAL_BUTTON)
+        save_button.click()
+        self.wait_visibility_real(self.locators.OK_DIV)
+        self.wait_invisibility(self.locators.OK_DIV)
+    
+    def wait_invisibility(self, locator, timeout=15):
+        return WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located(locator))
+
     def add_key_phrase(self, key_phrases: str):
         key_phrases_input = self.find(self.locators.KEY_PHRASES_INPUT)
         key_phrases_input.clear()
@@ -104,6 +122,7 @@ class AudienceAddAudiencePage(BasePage):
         ActionChains(self.driver).send_keys(Keys.RETURN).perform()
 
     def add_communtity(self, community: str):
+        self.wait_visibility(self.locators.ADD_BY_LIST_BUTTON)
         add_by_list_button = self.find(self.locators.ADD_BY_LIST_BUTTON)
         add_by_list_button.click()
         vk_communities_button = self.find(self.locators.VK_COMMUNITIES_BUTTON)
@@ -118,6 +137,7 @@ class AudienceAddAudiencePage(BasePage):
         self.find(self.locators.ADDED_COMMUNITY)
 
     def add_app(self, community: str):
+        self.wait_visibility(self.locators.LOAD_BY_LIST_BUTTON)
         add_by_list_button = self.find(self.locators.LOAD_BY_LIST_BUTTON)
         add_by_list_button.click()
         textarea = self.find(self.locators.APPS_TEXTAREA)
@@ -129,6 +149,7 @@ class AudienceAddAudiencePage(BasePage):
         close_modal.click()
 
     def click_save_button(self):
+        self.wait_visibility(self.locators.SAVE_BUTTON, timeout=15)
         save_button = self.find(self.locators.SAVE_BUTTON)
         save_button.click()
     

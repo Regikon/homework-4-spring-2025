@@ -23,6 +23,7 @@ class CompaniesPageLocators:
     PRICE_INPUT = (By.XPATH, '//input[@placeholder="Не задан"]')
     #CHOOSE_LID_FORMS_BUTTON = (By.XPATH, '//div[@data-id="leadads"]')
     CONTINUE_BUTTON = (By.XPATH, '//button[.//span[text()="Продолжить"]]')
+    
 
     REGION_INPUT = (By.XPATH, '//input[@placeholder="Страна, регион или город"]')
 

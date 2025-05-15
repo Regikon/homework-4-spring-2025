@@ -7,7 +7,7 @@ class AudienceAddAudiencePageLocators:
     AUDIENCE_NAME_INPUT = (By.XPATH, '//section[contains(@class, "CreateSegmentModal_form")]//input[@class[contains(., "vkuiInput__el")]]')
 
     USERLIST_SOURCE_BUTTON = (By.XPATH, '//div[contains(@class, "SourceType_button")][.//*[contains(., "Список пользователей")]]')
-    CREATE_NEW_LIST = (By.XPATH, '//div[@id="tab-create-from-user-list-new"]')
+    CREATE_NEW_LIST = (By.XPATH, '//div[@id="tab-create-from-user-list-new"]') 
     LIST_NAME_INPUT = (By.XPATH, '//input[@placeholder="Введите название списка"]')
     LIST_TYPE_DROPDOWN = (By.XPATH, '//div[contains(@class, "vkuiFormItem")][.//h5[text()="Тип списка"]]//input')
     UPLOAD_FILE = (By.XPATH, '//label[contains(@class, "LocalFileSelector_file__")]//input[@type="file"]')
@@ -47,3 +47,5 @@ class AudienceAddAudiencePageLocators:
 
     SAVE_IN_MODAL_BUTTON = (By.XPATH, '//div[contains(@class, "ModalSidebarPage_container")]//button[.//span[text()="Сохранить"]]')
     SAVE_BUTTON = (By.XPATH, '//button[contains(.,"Сохранить")]')
+
+    OK_DIV = (By.XPATH, '//div[contains(.,"Список успешно загружен")]')
