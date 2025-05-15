@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 import os
+import time
+from ui.pages.advertiser_lead_form_question_page import LeadFormQuestionPage
 from ui.locators.lead_form_page_locators import LeadFormDecorPageLocators
 from ui.pages.base_page import BasePage
 
@@ -16,6 +18,14 @@ class CorrectDecorPageData:
 class LeadFormDecorPage(BasePage):
     locators = LeadFormDecorPageLocators
     url = 'https://ads.vk.com/hq/leadads/leadforms'
+
+    correct_page_data = correct_page_data = CorrectDecorPageData(
+        name='Моя лид-форма',
+        logo='./images/logo.jpg',
+        company='Рога и копыта',
+        header='Стулья',
+        description='Продаём стулья'
+    )
 
     @staticmethod
     def sale_locator_types():
@@ -60,14 +70,13 @@ class LeadFormDecorPage(BasePage):
     def has_lead_form_description_empty_error(self):
         return self.has_element(self.locators.INPUT__DESCRIPTION_ALERT_EMPTY)
 
-    def switch_create_lending(self):
-        pass
-
     def set_up_logo(self, path):
         self.click(self.locators.INPUT__LOGO_UPLOAD)
         media_loader = MediaLoader(self.driver)
         media_loader.upload_image(path)
-        media_loader.select_image(os.path.basename(path))
+        filename = os.path.basename(path)
+        print(filename)
+        media_loader.select_image(filename)
 
     def has_logo(self):
         return self.has_element(self.locators.INPUT__LOGO_CHANGE)
@@ -111,5 +120,11 @@ class LeadFormDecorPage(BasePage):
     def click_continue(self):
         self.click(self.locators.BUTTON__CONTINUE)
 
-    def fill_correct_data(self):
-        pass
+    def go_to_questions_page(self, data: CorrectDecorPageData):
+        self.enter_lead_form_name(data.name)
+        self.enter_company_name(data.company)
+        self.enter_lead_form_header(data.header)
+        self.enter_lead_form_description(data.description)
+        self.set_up_logo(data.logo)
+        self.click_continue()
+        return LeadFormQuestionPage(self.driver)  

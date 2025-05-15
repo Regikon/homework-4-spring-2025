@@ -1,19 +1,10 @@
 from base_case import BaseCase, UserType
 from ui.pages.advertiser_leadforms_page import LeadFormsPage
-from ui.pages.advertiser_lead_form_decor_page import CorrectDecorPageData
 
 import pytest
 
-class TestCreateLeadForms(BaseCase):
+class TestCreateLeadFormDecorPage(BaseCase):
     user = UserType.ADVERTISER
-
-    correct_page_data = CorrectDecorPageData(
-        name='Моя лид-форма',
-        logo='./images/logo.jpg',
-        company='Рога и копыта',
-        header='Стулья',
-        description='Продаём стулья'
-    )
 
     @pytest.fixture(scope="function")
     def decor_page(self, request):
@@ -33,7 +24,6 @@ class TestCreateLeadForms(BaseCase):
         decor_page.click_continue()
         assert decor_page.has_logo_empty_error()
 
-    # @pytest.mark.skip('skip')
     def test_logo_set_up(self, decor_page):
         decor_page.set_up_logo('./images/logo.jpg')
         assert decor_page.has_logo()

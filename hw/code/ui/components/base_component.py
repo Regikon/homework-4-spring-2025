@@ -16,7 +16,7 @@ class BaseComponent(object):
         Get WebDriverWait object with given timeout
         """
         if timeout is None:
-            timeout = 5
+            timeout = 15
         return WebDriverWait(self.driver, timeout=timeout)
 
     def find(self, locator, timeout=None) -> WebElement:
@@ -41,3 +41,9 @@ class BaseComponent(object):
             return True
         except Exception:
             return False
+
+    def input_write(self, locator, text):
+        input = self.find(locator)
+        input.clear()
+        input.send_keys(text)
+        input.submit()

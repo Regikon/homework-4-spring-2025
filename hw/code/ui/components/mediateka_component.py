@@ -13,16 +13,14 @@ class MediaLoader(BaseComponent):
         file_input = self.find(self.locators.INPUT__LOAD_IMAGE)
         file_input.send_keys(os.path.abspath(path))
         file_input.submit()
+        
     
     def select_image(self, name):
         image_locator = self.locators.image(name)
         print(image_locator)
-        # image_button = self.find(image_locator, 15)
-        # time.sleep(10)
-        # image_button.click()
-        # time.sleep(10)
         self.click(image_locator)
-        self.click(self.locators.BUTTON__SAVE, 15)
+        time.sleep(3) # it's really necessary
+        self.click(self.locators.BUTTON__SAVE)
 
     def close_modal(self):
         self.click(self.locators.BUTTON__CLOSE)

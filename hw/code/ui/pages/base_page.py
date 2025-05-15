@@ -42,9 +42,3 @@ class BasePage(BaseComponent):
         if query_start > 0:
             return url[:query_start]
         return url
-    
-    def input_write(self, locator, text):
-        input = self.find(locator)
-        input.clear()
-        input.send_keys(text)
-        input.submit()
