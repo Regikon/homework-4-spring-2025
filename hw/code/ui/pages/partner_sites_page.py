@@ -1,4 +1,6 @@
 import enum
+
+from selenium.webdriver import ActionChains
 from ui.locators.partner_sites_page_locators import PartnerSitesPageLocators
 from ui.pages.base_page import BasePage
 from ui.pages.partner_add_site_page import PartnerAddSitePage
@@ -32,8 +34,7 @@ class PartnerSitesPage(BasePage):
         self.select_site(id)
         locator = self.get_option_locator_by_status(status)
         self.open_actions_dropdown()
-        option = self.find(locator)
-        option.click()
+        self.click(locator)
 
     def has_nothing_found_caption(self) -> bool:
         return self.has_element(self.locators.NOTHING_FOUND_CAPTION)
@@ -49,8 +50,7 @@ class PartnerSitesPage(BasePage):
 
     def search(self, query: str):
         input = self.find(self.locators.SITE_SEARCH_INPUT)
-        input.clear()
-        input.send_keys(query)
+        ActionChains(self.driver).click(input).send_keys(query)
 
     def apply_filter(self, site_status: SiteStatus):
         # removing previous filters if exist

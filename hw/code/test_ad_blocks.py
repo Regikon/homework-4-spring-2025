@@ -1,12 +1,15 @@
+from typing import List
 from base_case import BaseCase, UserType
 from test_partner_sites import PartnerSite
 from selenium.webdriver.common.keys import Keys
+import pytest
 
 
 from ui.components.ad_block_design_settings import BlockDesignSettings
 from ui.components.cpm_setting import CPMSpecification, CountryCPM, RegionCPM
-from ui.pages.add_ad_block_page import AdBlockSettings
-
+from ui.entities.ad_block import AdBlock
+from ui.entities.ad_block_settings import AdBlockSettings, AdBlockStatus
+from ui.pages.partner_site_ad_blocks_page import PartnerSiteAdBlocksPage
 
 class TestAddAdBlock(BaseCase):
     user = UserType.PARTNER
@@ -297,3 +300,51 @@ class TestAddAdBlock(BaseCase):
         add_block_page.submit()
         # TODO: add asserts
 
+class TestAdBlocks(BaseCase):
+    user = UserType.PARTNER
+
+    UNEXISTANT_BLOCK_NAME = "oyuohasldnv,.znxckl;ghpoashdflknasl;"
+
+    # This does not work since frontend has a bug
+    @pytest.mark.skip('skip')
+    def test_block_status_changes(self, one_ad_block: AdBlock):
+        self.driver.get(PartnerSiteAdBlocksPage.generate_url(one_ad_block.site_id))
+        blocks_page = PartnerSiteAdBlocksPage(self.driver)
+        blocks_page.set_block_status(one_ad_block.name, AdBlockStatus.STOPPED)
+        self.driver.refresh()
+        status = blocks_page.get_block_status(one_ad_block.id)
+        assert status == AdBlockStatus.STOPPED
+
+    def test_duplicates_blocks(self, one_ad_block: AdBlock):
+        self.driver.get(PartnerSiteAdBlocksPage.generate_url(one_ad_block.site_id))
+        blocks_page = PartnerSiteAdBlocksPage(self.driver)
+        duplicate_page = blocks_page.duplicate_block(one_ad_block.id)
+        duplicate_id = duplicate_page.block_id
+        self.driver.get(PartnerSiteAdBlocksPage.generate_url(one_ad_block.site_id))
+        blocks_page = PartnerSiteAdBlocksPage(self.driver)
+        assert blocks_page.has_block_with_id(duplicate_id)
+
+    def test_block_list_filters_stopped_sites(self, two_ad_blocks: List[AdBlock]):
+        self.driver.get(PartnerSiteAdBlocksPage.generate_url(two_ad_blocks[0].site_id))
+        blocks_page = PartnerSiteAdBlocksPage(self.driver)
+        first = two_ad_blocks[0]
+        second = two_ad_blocks[1]
+        blocks_page.set_block_status(first.name, AdBlockStatus.STOPPED)
+        blocks_page.apply_filter(AdBlockStatus.STOPPED)
+        assert blocks_page.has_block_with_id(first.id)
+        assert not blocks_page.has_block_with_id(second.id)
+        assert blocks_page.does_not_have_arhived_blocks()
+
+    def test_block_search_finds_block(self, two_ad_blocks: List[AdBlock]):
+        self.driver.get(PartnerSiteAdBlocksPage.generate_url(two_ad_blocks[0].site_id))
+        blocks_page = PartnerSiteAdBlocksPage(self.driver)
+        first = two_ad_blocks[0]
+        second = two_ad_blocks[1]
+        blocks_page.search(first.name)
+        assert blocks_page.has_block_with_id(first.id)
+        assert not blocks_page.has_block_with_id(second.id)
+
+    def test_block_search_shows_nothing_found_if_nothing_found(self, one_site: PartnerSite):
+        blocks_page = one_site.go_to_site_page(self.driver)
+        blocks_page.search(self.UNEXISTANT_BLOCK_NAME)
+        assert blocks_page.has_nothing_found_caption()

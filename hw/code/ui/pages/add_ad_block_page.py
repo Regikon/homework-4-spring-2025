@@ -1,28 +1,13 @@
-from ui.components.ad_block_design_settings import AdBlockDesignSettings, BlockDesignSettings
-from ui.components.cpm_setting import CPMSettings, CPMSpecification
+from ui.components.ad_block_design_settings import AdBlockDesignSettings
+from ui.components.cpm_setting import CPMSettings
 from ui.locators.add_ad_block_page_locators import AddAdBlockPageLocators
+from ui.pages.ad_block_page import AdBlockPage
 from ui.pages.base_page import BasePage
 from utils.re_url import RegExpUrl
 from selenium.webdriver.chrome.webdriver import WebDriver
-from typing import Literal, Optional, TypedDict, cast
+from typing import cast
 from parse import Result, parse
-
-BlockFormat = Literal["display_block"] | Literal["recommend_widget"] | Literal['amp_display_block']
-IntegrationType = Optional[Literal['direct'] | Literal['header_bidding']]
-ShowPeriod = Literal['day'] | Literal['week'] | Literal['month']
-
-class AdBlockSettings(TypedDict):
-    is_amp: bool
-    name: str
-    format: BlockFormat
-    size: Optional[str]
-    design: Optional[BlockDesignSettings]
-    integration_type: IntegrationType
-    cpm: Optional[CPMSpecification]
-    call_code: Optional[str]
-    show_limit: int
-    period: ShowPeriod
-    interval: int
+from ui.entities.ad_block_settings import BlockFormat, IntegrationType, ShowPeriod, AdBlockSettings
 
 class AddAdBlockPage(BasePage):
     locators = AddAdBlockPageLocators
@@ -152,9 +137,10 @@ class AddAdBlockPage(BasePage):
             self.cpm_settings.set_cpm(settings['cpm'])
         if settings['call_code'] is not None:
             self.set_call_code(settings['call_code'])
-        self.set_show_limit(settings['show_limit'])
-        self.set_show_period(settings['period'])
         self.set_show_interval(settings['interval'])
+        self.set_show_period(settings['period'])
+        self.set_show_limit(settings['show_limit'])
 
-    def submit(self): #TODO: redirect to the block page
+    def submit(self) -> AdBlockPage:
         self.click(self.locators.SUBMIT_BUTTON)
+        return AdBlockPage(self.driver)
