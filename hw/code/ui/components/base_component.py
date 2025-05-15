@@ -32,7 +32,7 @@ class BaseComponent(object):
         return self.driver.find_elements(by=locator[0], value=locator[1])
 
     def click(self, locator, timeout=None):
-        self.find(locator, timeout=timeout)
+        elem = self.find(locator, timeout=timeout)
         elem = self.wait(timeout).until(EC.element_to_be_clickable(locator))
         elem.click()
 
@@ -44,10 +44,19 @@ class BaseComponent(object):
         except Exception:
             return False
 
+    def input_write(self, locator, text):
+        input = self.find(locator)
+        input.clear()
+        input.send_keys(text)
+        input.submit()
+    
+    def input_write_without_submit(self, locator, text):
+        input = self.find(locator)
+        input.clear()
+        input.send_keys(text)
     def wait_till_element_disappears(self, locator, timeout=5):
         started = time.time()
         while time.time() - started < timeout:
             if not self.has_element(locator, POLL_FREQUENCY):
                 return True
         raise RuntimeError("Element still on the page")
-
