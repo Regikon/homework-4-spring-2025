@@ -9,7 +9,7 @@ import re
 from selenium.webdriver.chrome.webdriver import WebDriver
 
 class AudiencePage(BasePage):
-    url = 'https://ads.vk.com/hq/audience'
+    url = 'https://ads.vk.com/hq/audience' 
     locators = AudiencePageLocators
 
     def __init__(self, driver: WebDriver):
@@ -28,6 +28,9 @@ class AudiencePage(BasePage):
     def go_to_add_audience_page(self) -> AudienceAddAudiencePage:
         self.click(self.locators.ADD_AUDIENCE_BUTTON)
         return AudienceAddAudiencePage(self.driver)
+
+    def reload(self):
+        ActionChains(self.driver).send_keys(Keys.F5).perform()
     
     def go_to_userlist(self) -> AudienceAddUserlistPage:
         self.click(self.locators.USERLIST_SECTION)
