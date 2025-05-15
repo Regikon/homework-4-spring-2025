@@ -27,7 +27,7 @@ class BaseComponent(object):
 
     def find_all(self, locator, timeout=None) -> List[WebElement]:
         self.wait(timeout).until(EC.presence_of_element_located(locator))
-        return self.driver.find_elements(locator)
+        return self.driver.find_elements(by=locator[0], value=locator[1])
 
     def click(self, locator, timeout=None):
         self.find(locator, timeout=timeout)

@@ -3,7 +3,9 @@ from test_partner_sites import PartnerSite
 from selenium.webdriver.common.keys import Keys
 
 
-from ui.components.cpm_setting import CountryCPM, RegionCPM
+from ui.components.ad_block_design_settings import BlockDesignSettings
+from ui.components.cpm_setting import CPMSpecification, CountryCPM, RegionCPM
+from ui.pages.add_ad_block_page import AdBlockSettings
 
 
 class TestAddAdBlock(BaseCase):
@@ -43,6 +45,100 @@ class TestAddAdBlock(BaseCase):
     }
     NO_CPM = "CPM не задан"
     NOT_EXISTANT_COUNTRY = "123123123123"
+    BANNER_ZOOM = 50
+    DISPLAY_BLOCK_DESIGN_SETTINGS: BlockDesignSettings = {
+        'frame': {
+            'frame': "solid",
+            'color': "#ff0000"
+        },
+        'header': {
+            'color': "#00ff00",
+            'link_color': "#0000ff",
+            'font': "Verdana",
+            'link_underline': 'underline'
+        },
+        'text': {
+            'font': "Tahoma",
+            'color': '#fffff1',
+        },
+        'button': {
+            'font': 'Arial',
+            'background_color': '#00abf1',
+            'text_color': '#ff00ff'
+        }
+    }
+    DISPLAY_BLOCK_CPM: CPMSpecification = {
+        'general_limit': '20',
+        'country_cpms': [{
+            'country': 'Танзания',
+            'value': '200',
+            'region': 'Африка'
+        }],
+        'region_cpms': [
+            {
+                'region': 'Европа',
+                'value': '10000'
+            }
+        ]
+
+    }
+    DISPLAY_BLOCK_SETTINGS: AdBlockSettings = {
+        'is_amp': False,
+        'name': 'my first block',
+        'format': 'display_block',
+        'size': '300x600',
+        'design': DISPLAY_BLOCK_DESIGN_SETTINGS,
+        'integration_type': 'direct',
+        'cpm': DISPLAY_BLOCK_CPM,
+        'call_code': 'elelbobo',
+        'show_limit': 26,
+        'period': 'week',
+        'interval': 24
+    }
+
+    AMP_BLOCK_CPM: CPMSpecification = {
+        'general_limit': '2',
+        'country_cpms': [
+            {
+                'region': 'Бывший СССР',
+                'country': 'Россия',
+                'value': '400'
+            }
+        ],
+        'region_cpms': [
+            {
+                'region': 'Африка',
+                'value': '1000',
+            }
+        ]
+    }
+
+    AMP_BLOCK_SETTINGS: AdBlockSettings = {
+        'is_amp': True,
+        'name': 'my amp block',
+        'format': 'amp_display_block',
+        'size': '300x250',
+        'design': None,
+        'integration_type': None,
+        'cpm': AMP_BLOCK_CPM,
+        'call_code': '',
+        'show_limit': 6,
+        'period': 'month',
+        'interval': 2
+    }
+    RECOMMEND_WIDGET_SETTINGS: AdBlockSettings = {
+        'name': 'Мой рекомендательный виджет',
+        'format': 'recommend_widget',
+        'cpm': None,
+        'show_limit': 0,
+        'period': 'day',
+        'interval': 0,
+        'call_code': None,
+        'size': None,
+        'design': None,
+        'is_amp': False,
+        'integration_type': None
+    }
 
     def test_click_to_amp_radiobutton_removes_display_block_format(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
@@ -169,4 +265,35 @@ class TestAddAdBlock(BaseCase):
         add_block_page.cpm_settings.search(self.NOT_EXISTANT_COUNTRY)
         assert not add_block_page.cpm_settings.has_any_country()
 
+    def test_block_preview_changes_scale(self, one_site: PartnerSite):
+        add_block_page = one_site.go_to_add_block_page(self.driver)
+        design_settings = add_block_page.open_design_settings()
+        design_settings.set_scale(self.BANNER_ZOOM)
+        assert design_settings.banner_zoom == float(self.BANNER_ZOOM) / 100
+        # TODO: FIX zoom
+
+    def test_sets_all_design_settings(self, one_site: PartnerSite):
+        add_block_page = one_site.go_to_add_block_page(self.driver)
+        design_settings = add_block_page.open_design_settings()
+        design_settings.set_design(self.DISPLAY_BLOCK_DESIGN_SETTINGS)
+        design_settings.submit()
+        # TODO: Add asserts maybe
+
+    def test_adds_display_block(self, one_site: PartnerSite):
+        add_block_page = one_site.go_to_add_block_page(self.driver)
+        add_block_page.fill_block_settings(self.DISPLAY_BLOCK_SETTINGS)
+        add_block_page.submit()
+        # TODO: add asserts
+
+    def test_adds_amp_display_block(self, one_site: PartnerSite):
+        add_block_page = one_site.go_to_add_block_page(self.driver)
+        add_block_page.fill_block_settings(self.AMP_BLOCK_SETTINGS)
+        add_block_page.submit()
+        # TODO: add asserts
+
+    def test_adds_recommend_widget_block(self, one_site: PartnerSite):
+        add_block_page = one_site.go_to_add_block_page(self.driver)
+        add_block_page.fill_block_settings(self.RECOMMEND_WIDGET_SETTINGS)
+        add_block_page.submit()
+        # TODO: add asserts
 
