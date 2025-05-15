@@ -1,7 +1,8 @@
 from selenium.webdriver.common.by import By
 
 class CompaniesPageLocators:
-    CREATE_CAMPAIGN_BUTTON = (By.XPATH, '//button[.//span[text()="Создать кампанию"]]')
+    CREATE_CAMPAIGN_BUTTON = (By.XPATH, '//button[.//span[contains(text(), "Создать")]]')
+    CREATE_CAMPAIGN_BUTTON_ALT = (By.XPATH, '//a[.//span[contains(text(), "Создать")]]')
 
     EDIT_MAIN_NAME = (By.XPATH, '//div[contains(@class, "EditableTitle_container")]')
     EDIT_MAIN_NAME_INPUT = (By.XPATH, '//textarea[contains(@class, "EditableTitle_input")]')
@@ -70,7 +71,7 @@ class CompaniesPageLocators:
         return By.XPATH, '//div[@role="button" and .//button[text()="{name_of_company}"]]]'
     
     @staticmethod
-    def CREATED_ROW_MORE(name_of_company)://button[@aria-label="More"]
-        return By.XPATH, ''
+    def CREATED_ROW_MORE(name_of_company):
+        return By.XPATH, '//button[@aria-label="More"]'
 
 
