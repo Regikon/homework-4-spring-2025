@@ -28,12 +28,14 @@ class PartnerSitesPage(BasePage):
     def has_site_with_id(self, id: int) -> bool:
         return self.has_element(self.locators.SITE_ENTRY(id))
 
+    def wait_site_to_disappear(self, id: int):
+        return self.wait_till_element_disappears(self.locators.SITE_ENTRY(id))
+
     def set_site_status(self, id: int, status: SiteStatus):
         self.select_site(id)
         locator = self.get_option_locator_by_status(status)
         self.open_actions_dropdown()
-        option = self.find(locator)
-        option.click()
+        self.click(locator)
 
     def has_nothing_found_caption(self) -> bool:
         return self.has_element(self.locators.NOTHING_FOUND_CAPTION)

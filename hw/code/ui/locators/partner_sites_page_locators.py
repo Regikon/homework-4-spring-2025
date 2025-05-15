@@ -29,6 +29,6 @@ class PartnerSitesPageLocators:
 
     ANY_ARCHIVED_SITE = (By.XPATH, '//*[@data-status="archived"]')
 
-    SITE_SEARCH_INPUT = (By.XPATH, '//*[@class="vkuiSearch__input"]')
+    SITE_SEARCH_INPUT = (By.XPATH, '//*[@class="vkuiSearch__input"]//input')
 
     NOTHING_FOUND_CAPTION = (By.XPATH, "//*[contains(concat(' ', normalize-space(@class), ' '), 'emptyView_title')]")
