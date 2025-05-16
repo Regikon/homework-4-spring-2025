@@ -14,6 +14,7 @@ class MediaLoaderLocators:
         "//button[.//span[contains(text(), 'Сохранить')]]"
     )
 
+
     def image(self, name) -> tuple:
         return (
             By.XPATH,

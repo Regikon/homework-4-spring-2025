@@ -5,6 +5,7 @@ from ui.pages.audience_add_audience_page import AudienceAddAudiencePage
 from ui.pages.audience_add_offline_conversion_page import AudienceAddOfflineConversionPage
 from selenium.webdriver.common.action_chains import ActionChains
 import re
+from selenium.webdriver.common.keys import Keys
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 
