@@ -5,7 +5,6 @@ import time
 
 class TestAdvertiserSites(BaseCase):
     user = UserType.ADVERTISER
-
     SITE = "https://uart.site/"
     COMPANY_NAME = "Unique_part_of COMPANY_NAME _site_need_here"
     GROUP_NAME = "Unique_part_of GROUP_NAME _site_need_here"
@@ -15,32 +14,31 @@ class TestAdvertiserSites(BaseCase):
     OK_BUDGET = "200"
     REGION = "Чувашская Республика"
     INTEREST = "Авто внедорожники"
+    UI_TOGGLE_TIMEOUT = 0.1
 
-    #@pytest.mark.skip('skip')
     def test_create_campaign(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
         page.create_campaign()
-        assert page.has_main_panel()
+        assert page.has_element(CompaniesPage.locators.CHOOSE_SITE_BUTTON)
 
-    #@pytest.mark.skip('skip')
     def test_rename_campaign(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
         page.create_campaign()
         page.choose_site(self.SITE)
         page.rename_any(self.COMPANY_NAME)
-        assert page.has_this_company_name(self.COMPANY_NAME)
+        page.reload()
+        assert self.has_element(CompaniesPage.locators.COMPANY_NAME(self.COMPANY_NAME),
+            self.UI_TOGGLE_TIMEOUT)
 
-    #@pytest.mark.skip('skip')
     def test_wrong_site(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
         page.create_campaign()
         page.choose_site(self.WRONG_SITE)
-        assert page.has_err_site_link()
+        assert page.has_element(CompaniesPage.locators.INVALID_SITE_LINK_ERROR)
 
-    #@pytest.mark.skip('skip')
     def test_wrong_budget(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
@@ -48,9 +46,8 @@ class TestAdvertiserSites(BaseCase):
         page.choose_site(self.SITE)
         page.choose_budget(self.WRONG_BUDGET)
         page.confirm_company(self.WRONG_BUDGET)
-        assert page.has_err_budget()
+        assert page.has_element(CompaniesPage.locators.INVALID_BUDGET_ERROR)
 
-    #@pytest.mark.skip('skip')
     def test_ok_budget_and_site(self):
         self.driver.get(CompaniesPage.url)
         page = CompaniesPage(self.driver)
@@ -58,39 +55,37 @@ class TestAdvertiserSites(BaseCase):
         page.choose_site(self.SITE)
         page.choose_budget(self.OK_BUDGET)
         page.confirm_company(self.OK_BUDGET)
-        assert not page.has_err_budget()
-        page.remove_company()
+        assert not page.has_element(CompaniesPage.locators.INVALID_BUDGET_ERROR)
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('second_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME)], indirect=True)
     def test_rename_group(self, second_chapter_settings):
         page = second_chapter_settings
         page.rename_any(self.GROUP_NAME)
         page.reload()
-        assert page.has_this_company_name(self.GROUP_NAME)
+        assert self.has_element(self.locators.COMPANY_NAME(self.GROUP_NAME),
+            self.UI_TOGGLE_TIMEOUT)
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('second_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME)], indirect=True)
     def test_region_in_group(self, second_chapter_settings):
         page = second_chapter_settings
         #page.rename_any(self.GROUP_NAME)
         page.region_choose(self.REGION)
-        assert page.has_region(self.REGION)
+        assert page.has_element(CompaniesPage.locators.REGION_CHECKBOX(self.REGION))
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('second_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME)], indirect=True)
     def test_interests_in_group(self, second_chapter_settings):
         page = second_chapter_settings
         page.rename_any(self.GROUP_NAME)
         page.choose_interests(self.INTEREST)
-        assert page.has_interests(self.INTEREST)
+        assert page.has_element(CompaniesPage.locators.SPAN_TEXT(self.INTEREST))
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('third_chapter_settings', [(SITE, OK_BUDGET, ANNOUNCEMENT_NAME, REGION, INTEREST)], indirect=True)
     def test_announcement_rename(self, third_chapter_settings):
         page = third_chapter_settings
         page.rename_any(self.ANNOUNCEMENT_NAME)
-        assert page.has_this_company_name(self.ANNOUNCEMENT_NAME)
+        page.reload()
+        assert self.has_element(self.locators.COMPANY_NAME(self.ANNOUNCEMENT_NAME),
+            self.UI_TOGGLE_TIMEOUT)
 
 @pytest.fixture(scope='function')
 def second_chapter_settings(driver, request):

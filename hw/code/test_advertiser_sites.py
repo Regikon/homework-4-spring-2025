@@ -18,7 +18,6 @@ class TestAdvertiserSites(BaseCase):
     ERROR_RUSSIAN = "Недопустимое значение переменной. Используйте только буквы, цифры и символы $, _"
     INSIDE_ERR = "Внутренняя ошибка сервера"
 
-    #@pytest.mark.skip('skip')
     def test_add_pixel(self):
         self.driver.get(AdvertiserSitesPage.url)
         page = AdvertiserSitesPage(self.driver)
@@ -28,23 +27,21 @@ class TestAdvertiserSites(BaseCase):
         page.reload()
         assert page.get_pixel_ID_by_href(self.PIXEL_DOMAIN) is None
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_rename_pixel1(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.rename_pixel(pixel, self.RENAME)
         page.reload()
-        assert not page.has_element(page.SPAN_WITH_TEXT(self.RENAME))
+        assert not page.has_element(AdvertiserSitesPage.locators.SPAN_WITH_TEXT(self.RENAME))
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_rename_pixel(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.rename_pixel(self.PIXEL_DOMAIN, self.RENAME)
         page.reload()
-        assert not page.has_element(page.SPAN_WITH_TEXT(self.RENAME))
+        assert not page.has_element(AdvertiserSitesPage.locators.SPAN_WITH_TEXT(self.RENAME))
 
-    #@pytest.mark.skip('skip')
+
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_too_long_rename_pixel(self, pixel):
         page, pixel = pixel[0], pixel[1]
@@ -52,32 +49,28 @@ class TestAdvertiserSites(BaseCase):
         assert page.has_err_in_div()
         page.cancel_rename()
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_data_layer_normal(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
         page.code_pixel_text_correct(self.DATA_LAYER_OK)
-        assert not page.has_element(page.SPAN_WITH_TEXT(self.ERROR_RUSSIAN))
-        assert not page.has_element(page.SPAN_WITH_TEXT(self.INSIDE_ERR))
+        assert not page.has_element(AdvertiserSitesPage.locators.SPAN_WITH_TEXT(self.ERROR_RUSSIAN))
+        assert not page.has_element(AdvertiserSitesPage.locators.SPAN_WITH_TEXT(self.INSIDE_ERR))
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_data_layer_russian(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
         page.code_pixel_text_correct(self.DATA_LAYER_RUSSIAN)
-        assert page.has_element(page.SPAN_WITH_TEXT(self.ERROR_RUSSIAN))
+        assert page.has_element(AdvertiserSitesPage.locators.SPAN_WITH_TEXT(self.ERROR_RUSSIAN))
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_data_layer_long(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
         page.code_pixel_text_correct(self.DATA_LAYER_TOO_LONG)
-        assert page.has_element(page.SPAN_WITH_TEXT(self.INSIDE_ERR))
+        assert page.has_element(AdvertiserSitesPage.locators.SPAN_WITH_TEXT(self.INSIDE_ERR))
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_add_event_to_pixel(self, pixel):
         page, pixel = pixel[0], pixel[1]
@@ -87,9 +80,8 @@ class TestAdvertiserSites(BaseCase):
         page.select_condition()
         page.url_contains(self.URL_CONTAINS)
         page.confirm_creating_event()
-        assert page.has_element(page.SPAN_WITH_TEXT(self.EVENT_NAME))
+        assert page.has_element(AdvertiserSitesPage.locators.SPAN_WITH_TEXT(self.EVENT_NAME))
 
-    #@pytest.mark.skip('skip')
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_auditor_tag(self, pixel):
         page, pixel = pixel[0], pixel[1]
@@ -104,7 +96,7 @@ class TestAdvertiserSites(BaseCase):
         page, pixel = pixel[0], pixel[1]
         page.click(page.PIXEL_SETTINGS(self.PIXEL_DOMAIN))
         page.create_access(self.USER_TO_ACCESS)
-        assert page.has_element(page.SPAN_WITH_TEXT(self.USER_TO_ACCESS))
+        assert page.has_element(AdvertiserSitesPage.locators.SPAN_WITH_TEXT(self.USER_TO_ACCESS))
         page.revoke_access()
         page.reload()
         assert not page.has_element(page.DIV_WITH_TEXT(self.USER_TO_ACCESS))

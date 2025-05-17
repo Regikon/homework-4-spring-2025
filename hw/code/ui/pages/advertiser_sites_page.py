@@ -42,10 +42,6 @@ class AdvertiserSitesPage(BasePage):
         return By.XPATH, f'//div[contains(@class, "PixelsList__row") and .//a[contains(@href, "{href[:-1]}")]]'
 
     @staticmethod
-    def SPAN_WITH_TEXT(name):
-        return By.XPATH, f'//span[text()="{name}"]'
-
-    @staticmethod
     def DIV_WITH_TEXT(name):
         return By.XPATH, f'//div[text()="{name}"]'
 

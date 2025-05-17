@@ -73,19 +73,6 @@ class CompaniesPage(BasePage):
             .send_keys(Keys.RETURN)\
             .perform()
 
-    def has_main_panel(self) -> bool:
-        return self.has_element(self.locators.CHOOSE_SITE_BUTTON)
-
-    def has_this_company_name(self, name: str) -> bool:
-        self.reload()
-        return self.has_element(self.locators.COMPANY_NAME(name), timeout=10)
-
-    def has_err_site_link(self) -> bool:
-        return self.has_element(self.locators.INVALID_SITE_LINK_ERROR)
-
-    def has_err_budget(self) -> bool:
-        return self.has_element(self.locators.INVALID_BUDGET_ERROR)
-
     def create_minimum_company_settings(self, url: str, price: str):
         self.create_campaign()
         self.choose_site(url)
@@ -104,9 +91,7 @@ class CompaniesPage(BasePage):
         region_input = self.find(self.locators.REGION_INPUT)
         region_input.send_keys(region)  
         self.click(self.locators.REGION_CHECKBOX(region))
-    
-    def has_region(self, region: str) -> bool:
-        return self.has_element(self.locators.REGION_CHECKBOX(region))
+
 
     def delete_any(self, chapter_name: str):
         self.click(self.locators.SHOW_DELETE_BUTTON(chapter_name))
