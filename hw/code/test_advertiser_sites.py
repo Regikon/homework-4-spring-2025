@@ -5,6 +5,7 @@ import pytest
 class TestAdvertiserSites(BaseCase):
     user = UserType.ADVERTISER
     PIXEL_DOMAIN = "https://uart.site/"
+    PIXEL_DOMAIN_NAME = "uart.site"
     RENAME = "new_name"
     TOO_LONG_RENAME = "new_name"*255
     RUSSIAN_RENAME = "русское_имя"
@@ -22,10 +23,10 @@ class TestAdvertiserSites(BaseCase):
         self.driver.get(AdvertiserSitesPage.url)
         page = AdvertiserSitesPage(self.driver)
         page.add_pixel(self.PIXEL_DOMAIN)
-        assert page.get_pixel_ID_by_href(self.PIXEL_DOMAIN) is not None
+        assert page.has_element(AdvertiserSitesPage.locators.PIXEL_NAME(self.PIXEL_DOMAIN_NAME))
         page.dell_pixel(self.PIXEL_DOMAIN)
         page.reload()
-        assert page.get_pixel_ID_by_href(self.PIXEL_DOMAIN) is None
+        assert not page.has_element(AdvertiserSitesPage.locators.PIXEL_NAME(self.PIXEL_DOMAIN_NAME))
 
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)
     def test_rename_pixel1(self, pixel):
@@ -46,7 +47,7 @@ class TestAdvertiserSites(BaseCase):
     def test_too_long_rename_pixel(self, pixel):
         page, pixel = pixel[0], pixel[1]
         page.rename_pixel(self.PIXEL_DOMAIN, self.TOO_LONG_RENAME)
-        assert page.has_err_in_div()
+        assert page.has_element(self.locators.DIV_ERROR)
         page.cancel_rename()
 
     @pytest.mark.parametrize('pixel', [PIXEL_DOMAIN], indirect=True)

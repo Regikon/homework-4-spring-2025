@@ -125,9 +125,6 @@ class AdvertiserSitesPage(BasePage):
     def reload(self):
         ActionChains(self.driver).send_keys(Keys.F5).perform()
 
-    def has_err_in_div(self):
-        return self.has_element(self.locators.DIV_ERROR)
-
     def cancel_rename(self):
         self.click(self.locators.DISMISS_RENAME)
 

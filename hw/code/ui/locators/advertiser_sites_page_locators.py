@@ -53,6 +53,10 @@ class AdvertiserSitesLocators:
     ACCESS_ROW = (By.XPATH, '//div[contains(@class, "AccessKeysList_row")]')
     REVOKE_ACCESS_BUTTON = (By.XPATH, '//button[contains(@class, "RevokeSharingKeyCell")]')
     REVOKE_ACCESS_CONFIRM_BUTTON = (By.XPATH, '//button[.//span[text()="Закрыть доступ"]]')
+
+    @staticmethod
+    def PIXEL_NAME(name):
+         return By.XPATH, f'//a[text()="{name}"]'
     
     @staticmethod
     def SPAN_WITH_TEXT(name):
