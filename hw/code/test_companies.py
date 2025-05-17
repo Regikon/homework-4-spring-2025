@@ -29,7 +29,7 @@ class TestAdvertiserSites(BaseCase):
         page.choose_site(self.SITE)
         page.rename_any(self.COMPANY_NAME)
         page.reload()
-        assert self.has_element(CompaniesPage.locators.COMPANY_NAME(self.COMPANY_NAME),
+        assert page.has_element(CompaniesPage.locators.COMPANY_NAME(self.COMPANY_NAME),
             self.UI_TOGGLE_TIMEOUT)
 
     def test_wrong_site(self):
@@ -62,7 +62,7 @@ class TestAdvertiserSites(BaseCase):
         page = second_chapter_settings
         page.rename_any(self.GROUP_NAME)
         page.reload()
-        assert self.has_element(self.locators.COMPANY_NAME(self.GROUP_NAME),
+        assert page.has_element(self.locators.COMPANY_NAME(self.GROUP_NAME),
             self.UI_TOGGLE_TIMEOUT)
 
     @pytest.mark.parametrize('second_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME)], indirect=True)
@@ -84,7 +84,7 @@ class TestAdvertiserSites(BaseCase):
         page = third_chapter_settings
         page.rename_any(self.ANNOUNCEMENT_NAME)
         page.reload()
-        assert self.has_element(self.locators.COMPANY_NAME(self.ANNOUNCEMENT_NAME),
+        assert page.has_element(self.locators.COMPANY_NAME(self.ANNOUNCEMENT_NAME),
             self.UI_TOGGLE_TIMEOUT)
 
 @pytest.fixture(scope='function')
