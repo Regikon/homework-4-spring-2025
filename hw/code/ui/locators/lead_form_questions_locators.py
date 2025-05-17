@@ -36,6 +36,8 @@ class LeadFormQuestionsLocators:
     HAS_CONTACTS_TELEPHONE_ON_PREVIEW = (By.XPATH, "//input[@placeholder='+7']")
 
     CONTINUE = (By.XPATH, "//span[@class='vkuiButton__in'][.//span[text()='Продолжить']]")
+
+    RESULT_PAGE_ACTIVE = (By.XPATH, "//div[contains(@class, 'CreateLeadFormModal_activeStep') and contains(., 'Результат')]")
     
 
 
