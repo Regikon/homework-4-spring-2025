@@ -21,7 +21,6 @@ class CompaniesPageLocators:
     ADVERTISING_SITE_URL_INPUT = (By.XPATH, '//input[@placeholder="Вставьте ссылку или выберите из списка"]')
     GOAL_INPUT = (By.XPATH, '//input[@data-testid="priced-goal"]')
     PRICE_INPUT = (By.XPATH, '//input[@placeholder="Не задан"]')
-    #CHOOSE_LID_FORMS_BUTTON = (By.XPATH, '//div[@data-id="leadads"]')
     CONTINUE_BUTTON = (By.XPATH, '//button[.//span[text()="Продолжить"]]')
     
 
