@@ -115,6 +115,8 @@ class LeadFormDecorPageLocators:
         "//*[contains(@class, 'vkuiButton__in') and contains(., 'Продолжить')]"
     )
 
+    QUESTIONS_ACTIVE = (By.XPATH, "//div[contains(@class, 'CreateLeadFormModal_activeStep') and contains(., 'Вопросы')]")
+
 class LeadFormPageLocators:
     BUTTON__CREATE_NEW = (By.XPATH, "//button[contains(., 'Создать лид-форму')]")
     
