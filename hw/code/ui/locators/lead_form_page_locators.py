@@ -141,4 +141,6 @@ class LeadFormPageLocators:
         "//button[@aria-label='Remove']"
     )
 
-
+    @staticmethod
+    def LEAD_FORM_NAME(name):
+        return (By.XPATH, f"//h5[@data-testid='lead_form_name__{name}']")
