@@ -14,8 +14,6 @@ class AddAdBlockPage(BasePage):
     url = RegExpUrl("https://ads.vk.com/hq/partner/sites/[0-9]+/blocks$")
 
     FORM_UI_TOGGLING_TIMEOUT = 0.1
-    NAME_TOO_LONG_ERROR = "Название не должно превышать 200 символов"
-    NAME_EMPTY_ERROR = "Не может быть пустым"
 
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -39,30 +37,10 @@ class AddAdBlockPage(BasePage):
         # the site does not give us this information
         self.click(self.locators.SITE_IS_AMP_PAGE_CHECKBOX)
 
-    def has_recommend_widget(self) -> bool:
-        return self.has_element(self.locators.RECOMMEND_WIDGET_OPTION, self.FORM_UI_TOGGLING_TIMEOUT)
-
-    def has_video_instream(self) -> bool:
-        return self.has_element(self.locators.INSTREAM_VIDEO_OPTION, self.FORM_UI_TOGGLING_TIMEOUT)
-
-    def has_tune_design_button(self) -> bool:
-        return self.has_element(self.locators.DESIGN_SETTINGS_BUTTON, self.FORM_UI_TOGGLING_TIMEOUT)
-
-    def has_integration_type_radiogroup(self) -> bool:
-        return self.has_element(self.locators.DIRECT_INTEGRATION_RADIOBUTTON, self.FORM_UI_TOGGLING_TIMEOUT)
-
     def set_block_name(self, name: str):
         name_input = self.find(self.locators.AD_BLOCK_NAME_INPUT)
         name_input.clear()
         name_input.send_keys(name)
-
-    def has_name_too_long_error(self) -> bool:
-        error = self.find(self.locators.NAME_ERROR)
-        return error.text == self.NAME_TOO_LONG_ERROR
-
-    def has_name_empty_error(self) -> bool:
-        error = self.find(self.locators.NAME_ERROR)
-        return error.text == self.NAME_EMPTY_ERROR
 
     def has_name_error(self) -> bool:
         return self.has_element(self.locators.NAME_ERROR, self.FORM_UI_TOGGLING_TIMEOUT)
@@ -73,9 +51,6 @@ class AddAdBlockPage(BasePage):
 
     def select_recommend_widget_type(self):
         self.set_block_format('recommend_widget')
-
-    def has_size_selection(self):
-        self.has_element(self.locators.SIZE_SELECTION_RADIOGROUP, self.FORM_UI_TOGGLING_TIMEOUT)
 
     def set_size(self, size: str):
         self.click(self.locators.BLOCK_SIZE_OPTION(size))

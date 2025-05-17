@@ -83,19 +83,10 @@ class CPMSettings(BaseComponent):
             .send_keys(Keys.RETURN)\
             .perform()
 
-    def has_no_cpm_values(self) -> bool:
-        return self.has_element(self.locators.NO_CPM_LABEL, self.UI_UPDATE_TIMEOUT)
-
     def search(self, query: str):
         input = self.find(self.locators.SEARCH_INPUT)
         input.clear()
         input.send_keys(query)
-
-    def has_country_or_region(self, country_or_region: str) -> bool:
-        return self.has_element(self.locators.CPM_INPUT(country_or_region), self.UI_UPDATE_TIMEOUT)
-
-    def has_any_country(self):
-        return self.has_no_cpm_values()
 
     def toggle_show_only_set_cpms(self):
         self.click(self.locators.ONLY_SET_CPMS_CHECKBOX)

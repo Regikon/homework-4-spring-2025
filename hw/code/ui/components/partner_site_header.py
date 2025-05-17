@@ -26,9 +26,3 @@ class PartnerSiteHeader(BaseComponent):
             .send_keys(name)\
             .send_keys(Keys.RETURN)\
             .perform()
-
-    def is_name_input_active(self):
-        return self.has_element(self.locators.SITE_NAME_INPUT)
-
-    def has_name_too_long_error(self):
-        return self.has_element(self.locators.NAME_TOO_LONG_ERROR)

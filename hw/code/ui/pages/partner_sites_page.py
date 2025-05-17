@@ -25,9 +25,6 @@ class PartnerSitesPage(BasePage):
         self.click(self.locators.ADD_SITE_BUTTON)
         return PartnerAddSitePage(self.driver)
     
-    def has_site_with_id(self, id: int) -> bool:
-        return self.has_element(self.locators.SITE_ENTRY(id))
-
     def wait_site_to_disappear(self, id: int):
         return self.wait_till_element_disappears(self.locators.SITE_ENTRY(id))
 
@@ -36,13 +33,6 @@ class PartnerSitesPage(BasePage):
         locator = self.get_option_locator_by_status(status)
         self.open_actions_dropdown()
         self.click(locator)
-
-    def has_nothing_found_caption(self) -> bool:
-        return self.has_element(self.locators.NOTHING_FOUND_CAPTION)
-
-
-    def does_not_have_archived_sites(self) -> bool:
-        return not self.has_element(self.locators.ANY_ARCHIVED_SITE)
 
     def select_site(self, id: int):
         checkbox = self.find(self.locators.SITE_CHECKBOX(id))

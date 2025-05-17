@@ -40,17 +40,11 @@ class PartnerSiteAdBlocksPage(BasePage):
     def wait_to_block_to_disappear(self, id: int):
         self.wait_till_element_disappears(self.locators.BLOCK_ENTRY(id))
 
-    def has_block_with_id(self, id: int) -> bool:
-        return self.has_element(self.locators.BLOCK_ENTRY(id))
-
     def set_block_status(self, name: str, status: AdBlockStatus):
         self.select_block(name)
         locator = self.get_option_locator_by_status(status)
         self.open_actions_dropdown()
         self.click(locator)
-
-    def has_nothing_found_caption(self) -> bool:
-        return self.has_element(self.locators.NOTHING_FOUND_CAPTION)
 
     def select_block(self, name: str):
         checkbox = self.find(self.locators.BLOCK_CHECKBOX(name))
@@ -75,9 +69,6 @@ class PartnerSiteAdBlocksPage(BasePage):
             # already opened
             return
         self.click(self.locators.ACTIONS_DROPDOWN)
-
-    def does_not_have_arhived_blocks(self) -> bool:
-        return self.has_element(self.locators.ANY_ARCHIVED_BLOCK)
 
     def duplicate_block(self, block_id: int) -> AdBlockPage:
         duplicate_button = self.find(self.locators.DUPLICATE_BLOCK_BUTTON(block_id))
