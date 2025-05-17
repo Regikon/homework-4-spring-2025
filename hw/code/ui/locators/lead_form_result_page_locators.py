@@ -24,3 +24,5 @@ class LeadFormResultPageLocators:
     DESCRIPTION_TOO_LONG = (By.XPATH, "//div[contains(@class, 'vkuiFormItem')][.//*[text()='Описание']]//*[text()='Сократите текст']")
 
     CONTINUE = (By.XPATH, "//span[@class='vkuiButton__in'][.//span[text()='Продолжить']]")
+
+    SETTINGS_PAGE_ACTIVE = (By.XPATH, "//div[contains(@class, 'CreateLeadFormModal_activeStep') and contains(., 'Настройки')]")
