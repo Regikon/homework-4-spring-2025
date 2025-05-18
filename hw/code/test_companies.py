@@ -68,7 +68,6 @@ class TestAdvertiserSites(BaseCase):
     @pytest.mark.parametrize('second_chapter_settings', [(SITE, OK_BUDGET, GROUP_NAME)], indirect=True)
     def test_region_in_group(self, second_chapter_settings):
         page = second_chapter_settings
-        #page.rename_any(self.GROUP_NAME)
         page.region_choose(self.REGION)
         assert page.has_element(CompaniesPage.locators.REGION_CHECKBOX(self.REGION))
 
