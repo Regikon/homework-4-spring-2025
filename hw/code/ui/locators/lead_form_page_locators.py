@@ -115,7 +115,7 @@ class LeadFormDecorPageLocators:
         "//*[contains(@class, 'vkuiButton__in') and contains(., 'Продолжить')]"
     )
 
-    QUESTIONS_ACTIVE = (By.XPATH, "//div[contains(@class, 'CreateLeadFormModal_activeStep') and contains(., 'Вопросы')]")
+    STATUS_BAR_QUESTIONS_ACTIVE = (By.XPATH, "//div[contains(@class, 'CreateLeadFormModal_activeStep') and contains(., 'Вопросы')]")
 
 class LeadFormPageLocators:
     BUTTON__CREATE_NEW = (By.XPATH, "//button[contains(., 'Создать лид-форму')]")
@@ -144,3 +144,13 @@ class LeadFormPageLocators:
     @staticmethod
     def LEAD_FORM_NAME(name):
         return (By.XPATH, f"//h5[@data-testid='lead_form_name__{name}']")
+
+    @staticmethod
+    def REMOVE_BUTTON(name):
+        return (
+            By.XPATH,
+            f"//div[contains(@class, 'ContextMenuWrapper_wrapper')]\
+            [.//h5[@data-testid='lead_form_name__{name}']]//span[text()='Архивировать']"
+        )
+    
+    CONFIRM_DELETE_BUTTON = (By.XPATH, "//span[@class='vkuiButton__in'][.//*[contains(., 'Архивировать')]]")
