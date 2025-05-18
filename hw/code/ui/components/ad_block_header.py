@@ -25,12 +25,6 @@ class AdBlockHeader(BaseComponent):
     def block_integration(self):
         return self.find(self.locators.BLOCK_INTEGRATION).text
 
-    def is_name_input_active(self):
-        return self.has_element(self.locators.BLOCK_NAME_INPUT)
-
-    def has_name_too_long_error(self):
-        return self.has_element(self.locators.NAME_TOO_LONG_ERROR)
-
     def get_matching_code(self) -> str:
         self.click(self.locators.GET_CODE_BUTTON)
         code = self.find(self.locators.INTEGRATION_CODE).text
