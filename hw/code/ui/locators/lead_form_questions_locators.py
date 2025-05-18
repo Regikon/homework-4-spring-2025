@@ -37,7 +37,7 @@ class LeadFormQuestionsLocators:
 
     CONTINUE = (By.XPATH, "//span[@class='vkuiButton__in'][.//span[text()='Продолжить']]")
 
-    RESULT_PAGE_ACTIVE = (By.XPATH, "//div[contains(@class, 'CreateLeadFormModal_activeStep') and contains(., 'Результат')]")
+    STATUS_BAR_RESULT_PAGE_ACTIVE = (By.XPATH, "//div[contains(@class, 'CreateLeadFormModal_activeStep') and contains(., 'Результат')]")
     
 
 

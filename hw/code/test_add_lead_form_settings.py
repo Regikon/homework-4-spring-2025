@@ -8,7 +8,6 @@ from utils.random import generate_random_string
 
 class TestCreateLeadFormSettingsPage(BaseCase):
     user = UserType.ADVERTISER
-    locators = LeadFormSettingsPageLocators()
 
     @pytest.fixture(scope='function')
     def settings_page(self, request):
@@ -22,15 +21,15 @@ class TestCreateLeadFormSettingsPage(BaseCase):
     
     def test_enter_name_empty(self, settings_page):
         settings_page.enter_name('')
-        assert settings_page.has_element(self.locators.NAME_EMPTY)
+        assert settings_page.has_element(LeadFormSettingsPageLocators.NAME_EMPTY)
 
     def test_enter_address_empty(self, settings_page):
         settings_page.enter_address('')
-        assert settings_page.has_element(self.locators.ADDRESS_EMPTY)
+        assert settings_page.has_element(LeadFormSettingsPageLocators.ADDRESS_EMPTY)
     
     def test_enter_inn_long(self, settings_page):
         settings_page.enter_inn('1' * 33)
-        assert settings_page.has_element(self.locators.INN_LONG)
+        assert settings_page.has_element(LeadFormSettingsPageLocators.INN_LONG)
 
     def test_save_form(self):
         lead_form_name = generate_random_string(10)
@@ -53,5 +52,6 @@ class TestCreateLeadFormSettingsPage(BaseCase):
         settings_page.enter_name('Иван Иванов')
         settings_page.enter_address('Москва, ул. Пушкина, д. 1')
         assert settings_page.has_element(LeadFormsPage.locators.LEAD_FORM_NAME(lead_form_name))
+        LeadFormsPage(driver).remove_lead_form(lead_form_name)
         
 

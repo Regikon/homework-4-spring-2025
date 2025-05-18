@@ -7,7 +7,6 @@ from ui.pages.advertiser_lead_form_decor_page import LeadFormDecorPage
 
 class TestCreateLeadFormResultPage(BaseCase):
     user = UserType.ADVERTISER
-    locators = LeadFormResultPageLocators()
 
     @pytest.fixture(scope='function')
     def result_page(self, request):
@@ -22,44 +21,44 @@ class TestCreateLeadFormResultPage(BaseCase):
     @pytest.mark.skip('skip')
     def test_heder_empty(self, result_page):
         result_page.enter_header('')
-        assert result_page.has_element(self.locators.HEADER_EMPTY)
+        assert result_page.has_element(LeadFormResultPageLocators.HEADER_EMPTY)
 
     def test_header_long(self, result_page):
         result_page.enter_header('a' * 26)
-        assert result_page.has_element(self.locators.HEADER_TOO_LONG)
+        assert result_page.has_element(LeadFormResultPageLocators.HEADER_TOO_LONG)
     
     def test_description_long(self, result_page):
         result_page.enter_description('a' * 161)
-        assert result_page.has_element(self.locators.DESCRIPTION_TOO_LONG)
+        assert result_page.has_element(LeadFormResultPageLocators.DESCRIPTION_TOO_LONG)
     
     def test_add_site(self, result_page):
         result_page.click_add_site()
         result_page.enter_site('uart.site')
-        assert result_page.has_element(self.locators.HAS_SITE)
+        assert result_page.has_element(LeadFormResultPageLocators.HAS_SITE)
 
     def test_add_tel(self, result_page):
         result_page.click_add_tel()
         result_page.enter_tel('+7952812')
-        assert result_page.has_element(self.locators.HAS_TEL)
-        assert not result_page.has_element(self.locators.TEL_INCORRECT)
+        assert result_page.has_element(LeadFormResultPageLocators.HAS_TEL)
+        assert not result_page.has_element(LeadFormResultPageLocators.TEL_INCORRECT)
 
     def test_add_tel_incorrect(self, result_page):
         result_page.click_add_tel()
         result_page.enter_tel('123')
-        assert result_page.has_element(self.locators.TEL_INCORRECT)
+        assert result_page.has_element(LeadFormResultPageLocators.TEL_INCORRECT)
     
     def test_add_promo(self, result_page):
         result_page.click_add_promo()
         result_page.enter_promo('123')
-        assert result_page.has_element(self.locators.HAS_PROMO)
-        assert not result_page.has_element(self.locators.PROMO_TOO_LONG)
+        assert result_page.has_element(LeadFormResultPageLocators.HAS_PROMO)
+        assert not result_page.has_element(LeadFormResultPageLocators.PROMO_TOO_LONG)
 
     def test_add_promo_too_long(self, result_page):
         result_page.click_add_promo()
         result_page.enter_promo('1' * 31)
-        assert result_page.has_element(self.locators.PROMO_TOO_LONG)
+        assert result_page.has_element(LeadFormResultPageLocators.PROMO_TOO_LONG)
     
     def test_go_to_settings_page(self, result_page):
         result_page.go_to_settings_page()
-        assert result_page.has_element(self.locators.SETTINGS_PAGE_ACTIVE)
+        assert result_page.has_element(LeadFormResultPageLocators.STATUS_BAR_SETTINGS_PAGE_ACTIVE)
     
