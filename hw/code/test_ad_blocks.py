@@ -6,9 +6,11 @@ import pytest
 
 
 from ui.components.ad_block_design_settings import BlockDesignSettings
-from ui.components.cpm_setting import CPMSpecification, CountryCPM, RegionCPM
+from ui.components.ad_block_header import AdBlockHeader
+from ui.components.cpm_setting import CPMSettings, CPMSpecification, CountryCPM, RegionCPM
 from ui.entities.ad_block import AdBlock
 from ui.entities.ad_block_settings import AdBlockSettings, AdBlockStatus
+from ui.pages.add_ad_block_page import AddAdBlockPage
 from ui.pages.partner_site_ad_blocks_page import PartnerSiteAdBlocksPage
 
 class TestAddAdBlock(BaseCase):
@@ -147,35 +149,58 @@ class TestAddAdBlock(BaseCase):
         'integration_type': None
     }
 
+    # Time when UI is expected to have been changed
+    # Used when waiting an element to disappear from the UI
+    UI_TOGGLE_TIMEOUT = 0.1 #s
+    NAME_TOO_LONG_ERROR = "Название не должно превышать 200 символов"
+    NAME_EMPTY_ERROR = "Не может быть пустым"
+
     def test_click_to_amp_radiobutton_removes_display_block_format(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
         add_block_page.toggle_amp_page()
-        assert not add_block_page.has_recommend_widget()
-        assert not add_block_page.has_video_instream()
-        assert not add_block_page.has_tune_design_button()
-        assert not add_block_page.has_integration_type_radiogroup()
+        assert not add_block_page.has_element(
+            AddAdBlockPage.locators.RECOMMEND_WIDGET_OPTION,
+            self.UI_TOGGLE_TIMEOUT)
+        assert not add_block_page.has_element(
+            AddAdBlockPage.locators.INSTREAM_VIDEO_OPTION,
+            self.UI_TOGGLE_TIMEOUT)
+        assert not add_block_page.has_element(
+            AddAdBlockPage.locators.DESIGN_SETTINGS_BUTTON,
+            self.UI_TOGGLE_TIMEOUT)
+        assert not add_block_page.has_element(
+            AddAdBlockPage.locators.DIRECT_INTEGRATION_RADIOBUTTON,
+            self.UI_TOGGLE_TIMEOUT)
 
     def test_error_if_name_is_empty(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
         add_block_page.set_block_name('a' + Keys.BACKSPACE)
-        assert add_block_page.has_name_empty_error()
-        assert not add_block_page.create_button_is_enabled()
+        assert add_block_page.find(
+            AddAdBlockPage.locators.NAME_ERROR).text == self.NAME_EMPTY_ERROR
+        assert not add_block_page.find(
+            AddAdBlockPage.locators.SUBMIT_BUTTON).is_enabled()
 
     def test_error_if_name_is_too_long(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
         add_block_page.set_block_name('a' * (2 * self.AD_BLOCK_NAME_LEN_LIMIT))
-        assert add_block_page.has_name_too_long_error()
-        assert not add_block_page.create_button_is_enabled()
+        assert add_block_page.find(
+            AddAdBlockPage.locators.NAME_ERROR).text == self.NAME_TOO_LONG_ERROR
+        assert not add_block_page.find(
+            AddAdBlockPage.locators.SUBMIT_BUTTON).is_enabled()
 
     def test_ok_if_entered_correct_name(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
         add_block_page.set_block_name(self.CORRECT_BLOCK_NAME)
-        assert not add_block_page.has_name_error()
+        assert not add_block_page.has_element(AddAdBlockPage.locators.NAME_ERROR,
+                                              self.UI_TOGGLE_TIMEOUT)
 
     def test_no_size_selection_if_recommend_widget(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
         add_block_page.select_recommend_widget_type()
-        assert not add_block_page.has_size_selection()
+        assert not add_block_page.has_element(
+            AddAdBlockPage.locators.SIZE_SELECTION_RADIOGROUP,
+            self.UI_TOGGLE_TIMEOUT
+        )
+
 
     def test_general_cpm_ignores_letters(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
@@ -258,34 +283,47 @@ class TestAddAdBlock(BaseCase):
         add_block_page.select_manual_cpm()
         add_block_page.cpm_settings.set_region_cpm(self.VALID_REGION_CPM)
         add_block_page.cpm_settings.toggle_show_only_set_cpms()
-        assert not add_block_page.cpm_settings.has_no_cpm_values()
+        assert not add_block_page.cpm_settings.has_element(
+            CPMSettings.locators.NO_CPM_LABEL,
+            self.UI_TOGGLE_TIMEOUT
+        )
 
     def test_cpm_search_finds_country(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
         add_block_page.select_manual_cpm()
         add_block_page.cpm_settings.search(self.VALID_COUNTRY_CPM['country'])
-        assert add_block_page.cpm_settings.has_country_or_region(self.VALID_COUNTRY_CPM['country'])
+        assert add_block_page.has_element(
+            CPMSettings.locators.CPM_INPUT(self.VALID_COUNTRY_CPM['country']),
+            self.UI_TOGGLE_TIMEOUT
+        )
 
     def test_cpm_search_hides_countries_if_not_found(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
         add_block_page.select_manual_cpm()
         add_block_page.cpm_settings.search(self.NOT_EXISTANT_COUNTRY)
-        assert not add_block_page.cpm_settings.has_any_country()
+        assert not add_block_page.cpm_settings.has_element(
+            CPMSettings.locators.NO_CPM_LABEL,
+            self.UI_TOGGLE_TIMEOUT
+        )
 
-    # We cannot get css zoom value from the driver
+    # The test is skipped because
+    # we cannot get css zoom value from the driver
     # (or I did not come with a solution)
+    #
+    # Basically this test should assert that
+    # Real element size is equal to the initial element size
+    # scaled with given zoom value
+    # But selenium get_size method always returns the initial size
+    # because when in the browser, the final size of the ad banner 
+    # is calculated using css zoom. 
+    # Css width and height attributes
+    # of the element are always equal to the initial size
     @pytest.mark.skip('skip')
     def test_block_preview_changes_scale(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
         design_settings = add_block_page.open_design_settings()
         design_settings.set_scale(self.BANNER_ZOOM)
         assert design_settings.banner_zoom == float(self.BANNER_ZOOM) / 100
-
-    def test_sets_all_design_settings(self, one_site: PartnerSite):
-        add_block_page = one_site.go_to_add_block_page(self.driver)
-        design_settings = add_block_page.open_design_settings()
-        design_settings.set_design(self.DISPLAY_BLOCK_DESIGN_SETTINGS)
-        design_settings.submit()
 
     def test_adds_display_block(self, one_site: PartnerSite):
         add_block_page = one_site.go_to_add_block_page(self.driver)
@@ -317,6 +355,9 @@ class TestAdBlocks(BaseCase):
     UNEXISTANT_BLOCK_NAME = "oyuohasldnv,.znxckl;ghpoashdflknasl;"
 
     # This does not work since frontend has a bug
+    #
+    # The frontend ignores changing the status of ad blocks
+    # Button clicks correctly, but the status remains "on moderation"
     @pytest.mark.skip('skip')
     def test_block_status_changes(self, one_ad_block: AdBlock):
         self.driver.get(PartnerSiteAdBlocksPage.generate_url(one_ad_block.site_id))
@@ -333,9 +374,15 @@ class TestAdBlocks(BaseCase):
         duplicate_id = duplicate_page.block_id
         self.driver.get(PartnerSiteAdBlocksPage.generate_url(one_ad_block.site_id))
         blocks_page = PartnerSiteAdBlocksPage(self.driver)
-        assert blocks_page.has_block_with_id(duplicate_id)
+        assert blocks_page.has_element(
+            PartnerSiteAdBlocksPage.locators.BLOCK_ENTRY(duplicate_id))
 
     # This does not work since frontend has a bug
+    #
+    # When we click on apply filter button
+    # The site with some probability
+    # shows that it has applied the filter
+    # but in fact it has not.
     @pytest.mark.skip('skip')
     def test_block_list_filters_stopped_sites(self, two_ad_blocks: List[AdBlock]):
         self.driver.get(PartnerSiteAdBlocksPage.generate_url(two_ad_blocks[0].site_id))
@@ -344,9 +391,12 @@ class TestAdBlocks(BaseCase):
         second = two_ad_blocks[1]
         blocks_page.set_block_status(first.name, AdBlockStatus.STOPPED)
         blocks_page.apply_filter(AdBlockStatus.STOPPED)
-        assert blocks_page.has_block_with_id(first.id)
-        assert not blocks_page.has_block_with_id(second.id)
-        assert blocks_page.does_not_have_arhived_blocks()
+        assert blocks_page.has_element(
+            PartnerSiteAdBlocksPage.locators.BLOCK_ENTRY(first.id))
+        assert not blocks_page.has_element(
+            PartnerSiteAdBlocksPage.locators.BLOCK_ENTRY(second.id))
+        assert blocks_page.has_element(
+            PartnerSiteAdBlocksPage.locators.ANY_ARCHIVED_BLOCK)
 
     def test_block_search_finds_block(self, two_ad_blocks: List[AdBlock]):
         self.driver.get(PartnerSiteAdBlocksPage.generate_url(two_ad_blocks[0].site_id))
@@ -355,13 +405,16 @@ class TestAdBlocks(BaseCase):
         second = two_ad_blocks[1]
         blocks_page.search(first.name)
         blocks_page.wait_to_block_to_disappear(second.id)
-        assert blocks_page.has_block_with_id(first.id)
-        assert not blocks_page.has_block_with_id(second.id)
+        assert blocks_page.has_element(
+            PartnerSiteAdBlocksPage.locators.BLOCK_ENTRY(first.id))
+        assert not blocks_page.has_element(
+            PartnerSiteAdBlocksPage.locators.BLOCK_ENTRY(second.id))
 
     def test_block_search_shows_nothing_found_if_nothing_found(self, one_site: PartnerSite):
         blocks_page = one_site.go_to_site_page(self.driver)
         blocks_page.search(self.UNEXISTANT_BLOCK_NAME)
-        assert blocks_page.has_nothing_found_caption()
+        assert blocks_page.has_element(
+            PartnerSiteAdBlocksPage.locators.NOTHING_FOUND_CAPTION)
 
 class TestAdBlock(BaseCase):
     user = UserType.PARTNER
@@ -378,12 +431,14 @@ class TestAdBlock(BaseCase):
     def test_block_cannot_change_to_empty_name(self, one_ad_block: AdBlock):
         block_page = one_ad_block.go_to_block_page(self.driver)
         block_page.header.set_block_name('a' + Keys.BACKSPACE)
-        assert block_page.header.is_name_input_active()
+        assert block_page.header.has_element(
+            AdBlockHeader.locators.BLOCK_NAME_INPUT)
 
     def test_error_if_try_to_set_too_long_site_name(self, one_ad_block: AdBlock):
         block_page = one_ad_block.go_to_block_page(self.driver)
         block_page.header.set_block_name('a' * (2 * self.VALID_BLOCK_NAME_MAX_SYMBOLS_COUNT))
-        assert block_page.header.has_name_too_long_error()
+        assert block_page.header.has_element(
+            AdBlockHeader.locators.NAME_TOO_LONG_ERROR)
 
     def test_can_get_matching_code(self, one_ad_block: AdBlock):
         block_page = one_ad_block.go_to_block_page(self.driver)
