@@ -46,7 +46,8 @@ class CompaniesPage(BasePage):
 
     def remove_company(self):
         self.driver.get(self.out_url)
-        self.click(self.locators.DELETE_COMPANY)
+        if self.has_element(self.locators.DELETE_COMPANY):
+            self.click(self.locators.DELETE_COMPANY)
 
     def choose_interests1(self, one_interest: str):
         self.click(self.locators.INTERESTS_AND_BEHAVIOR_DIV)
@@ -57,9 +58,6 @@ class CompaniesPage(BasePage):
         )
         self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
         ActionChains(self.driver).move_to_element(element).click().perform()
-
-    def has_interests(self, text) -> bool:
-        return self.has_element(self.locators.SPAN_TEXT(text))
 
     def rename_any(self, new_name: str):
         self.click(self.locators.EDIT_MAIN_NAME)
@@ -79,7 +77,7 @@ class CompaniesPage(BasePage):
         self.choose_budget(price)
         self.confirm_company(price)
 
-    def create_minimum_group_settings(self, url: str, price: str, region: str, interest: str):
+    def create_minimum_group_settings(self, url: str, price: str, region: str, interest: str, group_name: str):
         self.create_minimum_company_settings(url, price)
         self.region_choose(region)
         self.choose_interests(interest)
@@ -106,22 +104,17 @@ class CompaniesPage(BasePage):
         return WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located(locator))
     
     def choose_interests(self, one_interest: str):
-        print(">>> Открытие меню интересов")
         self.click(self.locators.INTERESTS_AND_BEHAVIOR_DIV)
         self.click(self.locators.INTERESTS_DIV)
         self.click(self.locators.INTEREST_INPUT_MENU)
 
-        print(f">>> Поиск интереса: {one_interest}")
         element = WebDriverWait(self.driver, 5).until(
             EC.presence_of_element_located(self.locators.ONE_INTEREST(one_interest))
         )
         self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
-
-        print(">>> Клик по интересу через ActionChains")
         ActionChains(self.driver).move_to_element(element).click().perform()
 
     def region_choose(self, region: str):
-        print(f">>> Ввод региона: {region}")
         region_input = self.find(self.locators.REGION_INPUT)
 
         ActionChains(self.driver)\
@@ -129,8 +122,6 @@ class CompaniesPage(BasePage):
             .send_keys(region)\
             .pause(1)\
             .perform()
-
-        print(">>> Клик по чекбоксу региона через ActionChains")
         checkbox = WebDriverWait(self.driver, 5).until(
             EC.element_to_be_clickable(self.locators.REGION_CHECKBOX(region))
         )

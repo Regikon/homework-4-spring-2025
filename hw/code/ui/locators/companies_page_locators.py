@@ -9,7 +9,7 @@ class CompaniesPageLocators:
 
     @staticmethod
     def COMPANY_NAME(new_name):
-        return By.XPATH,  '//span[contains(text(), "{new_name}")]'
+        return By.XPATH,  f'//span[contains(text(), "{new_name}")]'
 
     DELL_CHAPTER_BUTTON = (By.XPATH, '//label[@data-testid="dropdown-item" and .//span[contains(text(), "Удалить")]]')
     CONFIRM_DELETE_BUTTON = (By.XPATH, '//button[.//span[text()="Удалить"]]')
@@ -28,7 +28,7 @@ class CompaniesPageLocators:
 
     @staticmethod
     def REGION_CHECKBOX(region_name):
-        return By.XPATH, f'//label[contains(@class, "vkuiCheckbox") and .//span[text()="{region_name}"]]'
+        return By.XPATH, f'//label[contains(@class, "vkuiCheckbox") and contains(normalize-space(.), "{region_name}")]'
 
     INTERESTS_AND_BEHAVIOR_DIV = (By.XPATH, '//div[@type="button" and .//h3[text()="Интересы и поведение"]]')
     INTERESTS_DIV = (By.XPATH, '//div[@role="button" and .//span[text()="Подбор пользователей на основе их интересов, привычек и увлечений"]]')
@@ -36,15 +36,15 @@ class CompaniesPageLocators:
 
     @staticmethod
     def ONE_INTEREST(interest_name):
-        return By.XPATH, '//div[@role="option" and @title="{interest_name}"]'
+        return By.XPATH, f'//div[@role="option" and @title="{interest_name}"]'
     
     @staticmethod
     def SHOW_DELETE_BUTTON(chapter_name):
-        return By.XPATH, '//div[@role="option" and .//span[text()="{chapter_name}"]]//button[@aria-label="More"]'
+        return By.XPATH, f'//div[@role="option" and .//span[text()="{chapter_name}"]]//button[@aria-label="More"]'
 
     @staticmethod
     def SPAN_TEXT(text):
-        return By.XPATH, '//span[text()="{text}"]'
+        return By.XPATH, f'//span[text()="{text}"]'
 
     INVALID_SITE_LINK_ERROR = (By.XPATH, '//div[text()="Не удалось подгрузить данные ссылки"]')
     INVALID_BUDGET_ERROR = (By.XPATH, '//div[text()="Укажите бюджет не меньше 100₽"]')
@@ -55,11 +55,11 @@ class CompaniesPageLocators:
 
     @staticmethod
     def WAIT_BUDGET(budget):#budget<=999!
-        return By.XPATH, '//h4[contains(@value, "{budget}")]'
+        return By.XPATH, f'//h4[contains(@value, "{budget}")]'
 
     @staticmethod
     def TEXT_INPUT_OF_ANNOUNCEMENT(text):
-        return By.XPATH, '//div[.//span[text()="{text}"]]//dib[contains(@class, "EditableTextField__textField")]'
+        return By.XPATH, f'//div[.//span[text()="{text}"]]//dib[contains(@class, "EditableTextField__textField")]'
 
     PUBLISH_BUTTON = (By.XPATH, '//button[.//span[text()="Опубликовать"]]')
     ADD_MORE_FORMATS = (By.XPATH, '//button[.//span[text()="Добавить ещё формат"]]')
@@ -68,7 +68,7 @@ class CompaniesPageLocators:
 
     @staticmethod
     def CREATED_ROW(name_of_company):
-        return By.XPATH, '//div[@role="button" and .//button[text()="{name_of_company}"]]]'
+        return By.XPATH, f'//div[@role="button" and .//button[text()="{name_of_company}"]]]'
     
     @staticmethod
     def CREATED_ROW_MORE(name_of_company):
