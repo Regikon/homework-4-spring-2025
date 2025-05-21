@@ -6,6 +6,8 @@ from ui.pages.audience_add_offline_conversion_page import AudienceAddOfflineConv
 from selenium.webdriver.common.action_chains import ActionChains
 import re
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 from selenium.webdriver.chrome.webdriver import WebDriver
 
@@ -16,15 +18,24 @@ class AudiencePage(BasePage):
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
 
+    def add_userlist(self) -> AudienceAddUserlistPage:
+        self.click(self.locators.ADD_LIST_BUTTON)
+        return AudienceAddUserlistPage(self.driver)
+
     def go_to_add_userlist_page(self) -> AudienceAddUserlistPage:
         self.click(self.locators.USERLIST_SECTION)
+        self.wait_visibility(self.locators.ADD_LIST_BUTTON)
         self.click(self.locators.ADD_LIST_BUTTON)
         return AudienceAddUserlistPage(self.driver)
     
     def go_to_add_offline_conversion_page(self) -> AudienceAddOfflineConversionPage:
         self.click(self.locators.OFFLINE_CONVERSION_SECTION)
+        self.wait_visibility(self.locators.ADD_LIST_BUTTON)
         self.click(self.locators.ADD_LIST_BUTTON)
         return AudienceAddOfflineConversionPage(self.driver)
+    
+    def go_to_audience_page(self):
+        self.click(self.locators.AUDIENCE_SECTION)
     
     def go_to_add_audience_page(self) -> AudienceAddAudiencePage:
         self.click(self.locators.ADD_AUDIENCE_BUTTON)
@@ -35,15 +46,6 @@ class AudiencePage(BasePage):
     
     def go_to_userlist(self) -> AudienceAddUserlistPage:
         self.click(self.locators.USERLIST_SECTION)
-
-    def has_userlist_with_name(self, name: str) -> bool:
-        return self.has_element(self.locators.USERLIST_BY_NAME(name))
-    
-    def has_audience_with_name(self, name: str) -> bool:
-        return self.has_element(self.locators.AUDIENCE_BY_NAME(name))
-    
-    def has_offline_conversion_with_name(self, name: str) -> bool:
-        return self.has_element(self.locators.OFFLINE_CONVERSION_BY_NAME(name))
     
     def get_current_identifier(self) -> float:
         status = self.find(self.locators.STATUS)
@@ -51,8 +53,6 @@ class AudiencePage(BasePage):
         tooltip = self.find(self.locators.HINT)
         text = tooltip.text
         match = re.search(r'\d+', text)
-        if not match:
-            raise ValueError(f"Не удалось найти число в тексте подсказки: '{text}'")
         return float(match.group())
     
     def delete_userlist(self, name: str):
@@ -64,6 +64,7 @@ class AudiencePage(BasePage):
         delete_button.click()
         delete_confirm_button = self.find(self.locators.DELETE_CONFIRM_BUTTON)
         delete_confirm_button.click()
+        self.wait_invisibility(self.locators.DELETE_CONFIRM_BUTTON)
 
     def delete_audience(self, name: str):
         userlist = self.find(self.locators.AUDIENCE_BY_NAME(name))
@@ -74,6 +75,13 @@ class AudiencePage(BasePage):
         delete_button.click()
         delete_confirm_button = self.find(self.locators.DELETE_AUDIENCE_CONFIRM_BUTTON)
         delete_confirm_button.click()
+        self.wait_invisibility(self.locators.DELETE_AUDIENCE_CONFIRM_BUTTON)
 
     def has_success_message(self) -> bool:
         return self.has_element(self.locators.SUCCESS_MESSAGE)
+    
+    def wait_invisibility(self, locator, timeout=15):
+        return WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located(locator))
+    
+    def wait_visibility(self, locator, timeout=15):
+        return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
