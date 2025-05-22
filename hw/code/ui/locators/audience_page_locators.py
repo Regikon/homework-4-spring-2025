@@ -17,7 +17,7 @@ class AudiencePageLocators:
     USERLIST_SECTION = (By.XPATH, '//div[@id="tab_audience.users_list"]')
     OFFLINE_CONVERSION_SECTION = (By.XPATH, '//div[@id="tab_audience.offline_conversion"]')
 
-    HINT = (By.XPATH, '//span[contains(@class, "StatusCell_tooltipSubhead")]')
+    HINT = (By.XPATH, '//span[contains(@class, "StatusCell_tooltipSubhead__")]')
 
     ADD_AUDIENCE_BUTTON = (By.XPATH, '//button[contains(.,"Создать аудиторию")]')
     ADD_LIST_BUTTON = (By.XPATH, '//button[contains(.,"Загрузить список")]')

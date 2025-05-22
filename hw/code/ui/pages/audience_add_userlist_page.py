@@ -20,25 +20,25 @@ class AudienceAddUserlistPage(BasePage):
     def switch_to_add_to_existing_list(self):
         add_to_existing_list_button = self.find(self.locators.TAB_BY_LABEL('Добавить в существующий'))
         add_to_existing_list_button.click()
-        self.find(self.locators.DROPDOWN_BY_LABEL('Список для добавления'))
+        self.find(self.base_locators.DROPDOWN_BY_LABEL('Список для добавления'))
 
     def switch_to_exclude_from_existing_list(self):
         exclude_from_existing_list_button = self.find(self.locators.TAB_BY_LABEL('Исключить из существующего'))
         exclude_from_existing_list_button.click()
-        self.find(self.locators.DROPDOWN_BY_LABEL('Список для исключения'))
+        self.find(self.base_locators.DROPDOWN_BY_LABEL('Список для исключения'))
 
     def set_list_name_as_file(self):
         name_as_file_checkbox = self.find(self.locators.NAME_AS_FILE_CHECKBOX)
         name_as_file_checkbox.click()
 
     def set_list(self):
-        list_dropdown = self.find(self.locators.DROPDOWN_BY_LABEL('Список для добавления'))
+        list_dropdown = self.find(self.base_locators.DROPDOWN_BY_LABEL('Список для добавления'))
         list_dropdown.click()
         list_dropdown.send_keys(Keys.ARROW_DOWN)
         list_dropdown.send_keys(Keys.RETURN)
 
     def set_list_exclude(self):
-        list_dropdown = self.find(self.locators.DROPDOWN_BY_LABEL('Список для исключения'))
+        list_dropdown = self.find(self.base_locators.DROPDOWN_BY_LABEL('Список для исключения'))
         list_dropdown.click()
         list_dropdown.send_keys(Keys.ARROW_DOWN)
         list_dropdown.send_keys(Keys.RETURN)
@@ -57,10 +57,7 @@ class AudienceAddUserlistPage(BasePage):
         self.wait_invisibility(self.locators.SAVE_BUTTON)
     
     def set_list_type(self):
-        list_type_dropdown = self.find(self.locators.DROPDOWN_BY_LABEL('Тип списка'))
+        list_type_dropdown = self.find(self.base_locators.DROPDOWN_BY_LABEL('Тип списка'))
         list_type_dropdown.click()
         list_type_dropdown.send_keys(Keys.ARROW_DOWN)
         list_type_dropdown.send_keys(Keys.RETURN)
-
-    def wait_invisibility(self, locator, timeout=15):
-        return WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located(locator))

@@ -2,10 +2,6 @@ from selenium.webdriver.common.by import By
 
 class AudienceAddUserlistPageLocators: 
     @staticmethod
-    def DROPDOWN_BY_LABEL(label_text: str):
-        return (By.XPATH, f'//div[contains(@class, "vkuiFormItem")][.//*[contains(text(), "{label_text}")]]//input')
-    
-    @staticmethod
     def TAB_BY_LABEL(label_text: str):
         return (By.XPATH, f'//div[contains(@class, "vkuiTabsItem")][.//*[contains(text(), "{label_text}")]]')
     

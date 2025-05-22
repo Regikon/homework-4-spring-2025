@@ -2,10 +2,6 @@ from selenium.webdriver.common.by import By
 
 class AudienceAddAudiencePageLocators:
     @staticmethod
-    def DROPDOWN_BY_LABEL(label_text: str):
-        return (By.XPATH, f'//div[contains(@class, "vkuiFormItem")][.//*[contains(text(), "{label_text}")]]//input')
-    
-    @staticmethod
     def SOURCE_BUTTON_BY_LABEL(label_text: str):
         return (By.XPATH, f'//div[contains(@class, "SourceType_button")][.//*[contains(., "{label_text}")]]')
     

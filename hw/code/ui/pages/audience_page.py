@@ -18,7 +18,7 @@ class AudiencePage(BasePage):
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
 
-    def add_userlist(self) -> AudienceAddUserlistPage:
+    def click_button_add_userlist(self) -> AudienceAddUserlistPage:
         self.click(self.locators.ADD_LIST_BUTTON)
         return AudienceAddUserlistPage(self.driver)
 
@@ -79,9 +79,3 @@ class AudiencePage(BasePage):
 
     def has_success_message(self) -> bool:
         return self.has_element(self.locators.SUCCESS_MESSAGE)
-    
-    def wait_invisibility(self, locator, timeout=15):
-        return WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located(locator))
-    
-    def wait_visibility(self, locator, timeout=15):
-        return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))

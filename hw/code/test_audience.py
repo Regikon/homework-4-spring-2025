@@ -1,5 +1,6 @@
 from base_case import BaseCase, UserType
 from ui.pages.audience_page import AudiencePage
+from ui.pages.audience_add_userlist_page import AudienceAddUserlistPage
 import os
 import pytest
 
@@ -11,13 +12,35 @@ def cleanup_registry(driver):
     page = AudiencePage(driver)
     for obj_type, name in to_delete:
         if obj_type == "audience":
-            if driver.current_url != 'https://ads.vk.com/hq/audience':
+            if driver.current_url != AudiencePage.url:
                 page.go_to_audience_page()
             page.delete_audience(name)
         elif obj_type == "userlist":
-            if driver.current_url != 'https://ads.vk.com/hq/audience/user_lists':
+            if driver.current_url != AudienceAddUserlistPage.url:
                 page.go_to_userlist()
             page.delete_userlist(name)
+
+@pytest.fixture(scope="function")
+def prepared_userlist(driver):
+    name = "test_add_new_list"
+    path_to_file = "hw/code/files/union_list.csv"
+    driver.get(AudiencePage.url)
+    page = AudiencePage(driver)
+    add_page = page.go_to_add_userlist_page()
+    add_page.set_list_name(name)
+    add_page.set_list_type()
+    add_page.upload_file(os.path.abspath(path_to_file))
+    add_page.set_not_create_new_audience()
+    add_page.click_save_button()
+    yield name 
+    driver.get(AudiencePage.url)
+    page = AudiencePage(driver)
+    if driver.current_url != AudienceAddUserlistPage.url:
+        page.go_to_userlist()
+    try:
+        page.delete_userlist(name)
+    except Exception as e:
+        print(f"Error deleting userlist {name}: {e}")
 
 class TestAddUserlist(BaseCase):
     user = UserType.ADVERTISER
@@ -26,16 +49,6 @@ class TestAddUserlist(BaseCase):
     PATH_TO_FILE_UNION_LIST = "hw/code/files/union_list.csv"
     PATH_TO_FILE_GENERATED_DATA = "hw/code/files/generated_data_250.csv"
     CORRECT_NAME = "test_add_new_list"
-
-    def prepare(self):
-        self.driver.get(AudiencePage.url)
-        audience_page = AudiencePage(self.driver)
-        add_userlist_page = audience_page.go_to_add_userlist_page()
-        add_userlist_page.set_list_name(self.CORRECT_NAME)
-        add_userlist_page.set_list_type()
-        add_userlist_page.upload_file(os.path.abspath(self.PATH_TO_FILE_UNION_LIST))
-        add_userlist_page.set_not_create_new_audience()
-        add_userlist_page.click_save_button()
 
     def test_add_new_list(self, cleanup_registry):
         self.driver.get(AudiencePage.url)
@@ -49,8 +62,7 @@ class TestAddUserlist(BaseCase):
         cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         assert audience_page.has_element(AudiencePage.locators.USERLIST_BY_NAME(self.CORRECT_NAME))
 
-    def test_add_to_existing_list(self, cleanup_registry):
-        self.prepare()
+    def test_add_to_existing_list(self, prepared_userlist):
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         audience_page.go_to_userlist()
@@ -62,11 +74,9 @@ class TestAddUserlist(BaseCase):
         add_userlist_page.click_save_button()
         audience_page.has_success_message()
         new_identifier = audience_page.get_current_identifier()
-        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         assert new_identifier >= current_identifier
 
-    def test_exclude_from_existing_list(self, cleanup_registry):
-        self.prepare()
+    def test_exclude_from_existing_list(self, prepared_userlist):
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         audience_page.go_to_userlist()
@@ -78,11 +88,9 @@ class TestAddUserlist(BaseCase):
         add_userlist_page.click_save_button()
         audience_page.has_success_message()
         new_identifier = audience_page.get_current_identifier()
-        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         assert new_identifier <= current_identifier
 
-    def test_delete_list(self):
-        self.prepare()
+    def test_delete_list(self, prepared_userlist):
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         audience_page.go_to_userlist()
@@ -133,9 +141,9 @@ class TestAddAudience(BaseCase):
         add_audience_page.upload_file(os.path.abspath(self.PATH_TO_FILE_UNION_LIST))
         add_audience_page.click_save_button_in_modal_wait()
         add_audience_page.click_save_button()
+        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         audience_page.delete_audience(self.CORRECT_NAME)
         audience_page.reload()
-        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         assert not audience_page.has_element(AudiencePage.locators.AUDIENCE_BY_NAME(self.CORRECT_NAME))
 
     def test_exclude_userlist_source(self, cleanup_registry):
