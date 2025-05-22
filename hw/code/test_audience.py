@@ -3,6 +3,7 @@ from ui.pages.audience_page import AudiencePage
 from ui.pages.audience_add_userlist_page import AudienceAddUserlistPage
 import os
 import pytest
+import re
 
 @pytest.fixture(scope="function")
 def cleanup_registry(driver):
@@ -42,6 +43,11 @@ def prepared_userlist(driver):
     except Exception as e:
         print(f"Error deleting userlist {name}: {e}")
 
+def get_identifier(tooltip):
+    text = tooltip.text
+    match = re.search(r'\d+', text)
+    return float(match.group())
+
 class TestAddUserlist(BaseCase):
     user = UserType.ADVERTISER
 
@@ -66,28 +72,36 @@ class TestAddUserlist(BaseCase):
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         audience_page.go_to_userlist()
-        current_identifier = audience_page.get_current_identifier()
+        audience_page.open_status()
+        tooltip = audience_page.find(AudiencePage.locators.HINT)
+        current_identifier = get_identifier(tooltip)
         add_userlist_page = audience_page.go_to_add_userlist_page()
         add_userlist_page.switch_to_add_to_existing_list()
         add_userlist_page.set_list()
         add_userlist_page.upload_file(os.path.abspath(self.PATH_TO_FILE_GENERATED_DATA))
         add_userlist_page.click_save_button()
         audience_page.has_success_message()
-        new_identifier = audience_page.get_current_identifier()
+        audience_page.open_status()
+        tooltip = audience_page.find(AudiencePage.locators.HINT)
+        new_identifier = get_identifier(tooltip)
         assert new_identifier >= current_identifier
 
     def test_exclude_from_existing_list(self, prepared_userlist):
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         audience_page.go_to_userlist()
-        current_identifier = audience_page.get_current_identifier()
+        audience_page.open_status()
+        tooltip = audience_page.find(AudiencePage.locators.HINT)
+        current_identifier = get_identifier(tooltip)
         add_userlist_page = audience_page.go_to_add_userlist_page()
         add_userlist_page.switch_to_exclude_from_existing_list()
         add_userlist_page.set_list_exclude()
         add_userlist_page.upload_file(os.path.abspath(self.PATH_TO_FILE_GENERATED_DATA))
         add_userlist_page.click_save_button()
         audience_page.has_success_message()
-        new_identifier = audience_page.get_current_identifier()
+        audience_page.open_status()
+        tooltip = audience_page.find(AudiencePage.locators.HINT)
+        new_identifier = get_identifier(tooltip)
         assert new_identifier <= current_identifier
 
     def test_delete_list(self, prepared_userlist):

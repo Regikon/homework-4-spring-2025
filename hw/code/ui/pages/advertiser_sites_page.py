@@ -105,13 +105,13 @@ class AdvertiserSitesPage(BasePage):
 
     def select_category(self):
         self.click(self.locators.INPUT_EVENT_CATEGORY)
-        self.wait_visibility(self.locators.INPUT_CATEGORY).click()
+        self.wait_clickability(self.locators.INPUT_CATEGORY).click()
 
     def select_condition(self):
         self.click(self.locators.INPUT_EVENT_CONDITION)
-        self.wait_visibility(self.locators.INPUT_CONDITION).click()
+        self.wait_clickability(self.locators.INPUT_CONDITION).click()
     
-    def wait_visibility(self, locator, timeout=15):
+    def wait_clickability(self, locator, timeout=15):
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     def wait_invisibility(self, locator, timeout=15):

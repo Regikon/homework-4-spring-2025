@@ -40,7 +40,7 @@ class CompaniesPage(BasePage):
 
     def confirm_company(self, price, first=True):
         if first:
-            self.wait_visibility(self.locators.WAIT_FOR_ERROR_DIV)
+            self.wait_clickability(self.locators.WAIT_FOR_ERROR_DIV)
             self.wait_invisibility(self.locators.WAIT_FOR_ERROR_DIV)
         self.click(self.locators.CONTINUE_BUTTON)
 
@@ -97,7 +97,7 @@ class CompaniesPage(BasePage):
         self.click(self.locators.CONFIRM_DELETE_BUTTON)
         self.wait_invisibility(self.locators.WAIT_FOR_DELETE)
 
-    def wait_visibility(self, locator, timeout=15):
+    def wait_clickability(self, locator, timeout=15):
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     def wait_invisibility(self, locator, timeout=15):

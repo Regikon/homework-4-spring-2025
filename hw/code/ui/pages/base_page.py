@@ -44,10 +44,10 @@ class BasePage(BaseComponent):
             return url[:query_start]
         return url
     
-    def wait_visibility(self, locator, timeout=15):
+    def wait_clickability(self, locator, timeout=15):
         return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
 
-    def wait_visibility_real(self, locator, timeout=15):
+    def wait_visibility(self, locator, timeout=15):
         return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
     
     def wait_invisibility(self, locator, timeout=15):

@@ -38,7 +38,7 @@ class AudienceAddAudiencePage(BasePage):
         events_from_announcements_source_button.click()
 
     def choose_audience_source(self):
-        self.wait_visibility(self.locators.SOURCE_BUTTON_BY_LABEL('Уже созданная аудитория'))
+        self.wait_clickability(self.locators.SOURCE_BUTTON_BY_LABEL('Уже созданная аудитория'))
         self.click(self.locators.SOURCE_BUTTON_BY_LABEL('Уже созданная аудитория'))
 
     def choose_mobile_categories_source(self):
@@ -50,7 +50,7 @@ class AudienceAddAudiencePage(BasePage):
         events_from_lead_forms_source_button.click()
     
     def choose_key_phrases_source(self):
-        self.wait_visibility(self.locators.SOURCE_BUTTON_BY_LABEL('Вводили ключевые фразы'))
+        self.wait_clickability(self.locators.SOURCE_BUTTON_BY_LABEL('Вводили ключевые фразы'))
         self.click(self.locators.SOURCE_BUTTON_BY_LABEL('Вводили ключевые фразы'))
 
     def choose_community_subscribers_source(self):
@@ -63,13 +63,13 @@ class AudienceAddAudiencePage(BasePage):
         listeners_source_button.click()
 
     def choose_vk_mini_apps_source(self):
-        self.wait_visibility(self.locators.SOURCE_BUTTON_BY_LABEL('Пользуются VK Mini Apps'), 25)
+        self.wait_clickability(self.locators.SOURCE_BUTTON_BY_LABEL('Пользуются VK Mini Apps'), 25)
         source_button = self.find(self.locators.SOURCE_BUTTON_BY_LABEL('Пользуются VK Mini Apps'))
         self.driver.execute_script("arguments[0].scrollIntoView(true);", source_button)
         source_button.click()
 
     def create_new_list(self):
-        self.wait_visibility(self.locators.CREATE_NEW_LIST)
+        self.wait_clickability(self.locators.CREATE_NEW_LIST)
         create_new_list_button = self.find(self.locators.CREATE_NEW_LIST)
         create_new_list_button.click()
 
@@ -96,13 +96,13 @@ class AudienceAddAudiencePage(BasePage):
         list_dropdown.send_keys(Keys.RETURN)
 
     def click_save_button_in_modal(self):
-        self.wait_visibility(self.locators.SAVE_IN_MODAL_BUTTON)
+        self.wait_clickability(self.locators.SAVE_IN_MODAL_BUTTON)
         self.click(self.locators.SAVE_IN_MODAL_BUTTON)
 
     def click_save_button_in_modal_wait(self):
         save_button = self.find(self.locators.SAVE_IN_MODAL_BUTTON)
         save_button.click()
-        self.wait_visibility_real(self.locators.OK_DIV)
+        self.wait_visibility(self.locators.OK_DIV)
         self.wait_invisibility(self.locators.OK_DIV)
 
     def add_key_phrase(self, key_phrases: str):
@@ -113,7 +113,7 @@ class AudienceAddAudiencePage(BasePage):
         ActionChains(self.driver).send_keys(Keys.RETURN).perform()
 
     def add_communtity(self, community: str):
-        self.wait_visibility(self.locators.ADD_BY_LIST_BUTTON)
+        self.wait_clickability(self.locators.ADD_BY_LIST_BUTTON)
         add_by_list_button = self.find(self.locators.ADD_BY_LIST_BUTTON)
         add_by_list_button.click()
         vk_communities_button = self.find(self.locators.VK_COMMUNITIES_BUTTON)
@@ -128,7 +128,7 @@ class AudienceAddAudiencePage(BasePage):
         self.find(self.locators.ADDED_COMMUNITY)
 
     def add_app(self, community: str):
-        self.wait_visibility(self.locators.LOAD_BY_LIST_BUTTON)
+        self.wait_clickability(self.locators.LOAD_BY_LIST_BUTTON)
         add_by_list_button = self.find(self.locators.LOAD_BY_LIST_BUTTON)
         add_by_list_button.click()
         textarea = self.find(self.locators.APPS_TEXTAREA)
@@ -140,7 +140,7 @@ class AudienceAddAudiencePage(BasePage):
         close_modal.click()
 
     def click_save_button(self):
-        self.wait_visibility(self.locators.SAVE_BUTTON, timeout=25)
+        self.wait_clickability(self.locators.SAVE_BUTTON, timeout=25)
         save_button = self.find(self.locators.SAVE_BUTTON)
         save_button.click()
         self.wait_invisibility(self.locators.SAVE_BUTTON, timeout=15)

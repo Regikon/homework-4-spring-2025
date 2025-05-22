@@ -24,13 +24,13 @@ class AudiencePage(BasePage):
 
     def go_to_add_userlist_page(self) -> AudienceAddUserlistPage:
         self.click(self.locators.USERLIST_SECTION)
-        self.wait_visibility(self.locators.ADD_LIST_BUTTON)
+        self.wait_clickability(self.locators.ADD_LIST_BUTTON)
         self.click(self.locators.ADD_LIST_BUTTON)
         return AudienceAddUserlistPage(self.driver)
     
     def go_to_add_offline_conversion_page(self) -> AudienceAddOfflineConversionPage:
         self.click(self.locators.OFFLINE_CONVERSION_SECTION)
-        self.wait_visibility(self.locators.ADD_LIST_BUTTON)
+        self.wait_clickability(self.locators.ADD_LIST_BUTTON)
         self.click(self.locators.ADD_LIST_BUTTON)
         return AudienceAddOfflineConversionPage(self.driver)
     
@@ -47,13 +47,9 @@ class AudiencePage(BasePage):
     def go_to_userlist(self) -> AudienceAddUserlistPage:
         self.click(self.locators.USERLIST_SECTION)
     
-    def get_current_identifier(self) -> float:
+    def open_status(self) -> float:
         status = self.find(self.locators.STATUS)
         ActionChains(self.driver).move_to_element(status).perform()
-        tooltip = self.find(self.locators.HINT)
-        text = tooltip.text
-        match = re.search(r'\d+', text)
-        return float(match.group())
     
     def delete_userlist(self, name: str):
         userlist = self.find(self.locators.USERLIST_BY_NAME(name))
