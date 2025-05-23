@@ -11,13 +11,13 @@ class AudiencePageLocators:
     
     @staticmethod
     def AUDIENCE_BY_NAME(name: str):
-        return (By.XPATH, f'//div[@id="audience"]//div[contains(@class, "NameCell_wrapper")]//h5[normalize-space(text())="{name}"]')
+        return (By.XPATH, f'//div[@id="audience"]//span[contains(@class, "NameCell_name") and normalize-space(text())="{name}"]')
     
     AUDIENCE_SECTION = (By.XPATH, '//div[@id="tab_audience"]')
     USERLIST_SECTION = (By.XPATH, '//div[@id="tab_audience.users_list"]')
     OFFLINE_CONVERSION_SECTION = (By.XPATH, '//div[@id="tab_audience.offline_conversion"]')
 
-    HINT = (By.XPATH, '//h5[contains(@class, "StatusCell_tooltipSubhead__")]')
+    HINT = (By.XPATH, '//span[contains(@class, "StatusCell_tooltipSubhead__")]')
 
     ADD_AUDIENCE_BUTTON = (By.XPATH, '//button[contains(.,"Создать аудиторию")]')
     ADD_LIST_BUTTON = (By.XPATH, '//button[contains(.,"Загрузить список")]')

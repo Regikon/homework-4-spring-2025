@@ -1,11 +1,6 @@
-class BasePageLocators:
-    """
-    This is an example of locators class.
-    Every Locators class must consist of
-    data attributes, each one must be a
-    selenium locator.
+from selenium.webdriver.common.by import By
 
-    For example:
-    BasePageLocators.MAGIC_WAND = (By.NAME, 'magic-wand')
-    """
-    pass
+class BasePageLocators:
+    @staticmethod
+    def DROPDOWN_BY_LABEL(label_text: str):
+        return (By.XPATH, f'//div[contains(@class, "vkuiFormItem")][.//*[contains(text(), "{label_text}")]]//input')

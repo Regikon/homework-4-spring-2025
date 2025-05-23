@@ -1,9 +1,10 @@
 import time
 
-from ui.locators import base_page_locators
+from ui.locators.base_page_locators import BasePageLocators
 from selenium.webdriver.chrome.webdriver import WebDriver
-
+from selenium.webdriver.support.wait import WebDriverWait
 from ui.components.base_component import BaseComponent
+from selenium.webdriver.support import expected_conditions as EC
 
 class PageNotOpenedException(Exception):
     """
@@ -18,7 +19,7 @@ class BasePage(BaseComponent):
     methods that are usable in the context of every page
     """
 
-    locators = base_page_locators
+    base_locators = BasePageLocators
     url = 'https://ads.vk.com'
 
     def __init__(self, driver: WebDriver):
@@ -42,3 +43,12 @@ class BasePage(BaseComponent):
         if query_start > 0:
             return url[:query_start]
         return url
+    
+    def wait_clickability(self, locator, timeout=15):
+        return WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
+
+    def wait_visibility(self, locator, timeout=15):
+        return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+    
+    def wait_invisibility(self, locator, timeout=15):
+        return WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
