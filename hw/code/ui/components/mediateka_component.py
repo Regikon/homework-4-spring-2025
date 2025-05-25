@@ -1,7 +1,6 @@
-import time
 from ui.components.base_component import BaseComponent
 from ui.locators.mediateka_locators import MediaLoaderLocators
-from selenium.webdriver.support.wait import WebDriverWait, POLL_FREQUENCY
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 import os
@@ -27,4 +26,4 @@ class MediaLoader(BaseComponent):
         self.click(self.locators.BUTTON__CLOSE)
 
     def wait_visibility(self, locator, timeout=15):
-        return WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(locator))
+        return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
