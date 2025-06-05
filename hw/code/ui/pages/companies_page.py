@@ -120,8 +120,10 @@ class CompaniesPage(BasePage):
         ActionChains(self.driver)\
             .click(region_input)\
             .send_keys(region)\
-            .pause(1)\
             .perform()
+        WebDriverWait(self.driver, 5).until(
+        EC.presence_of_element_located(self.locators.REGION_CHECKBOX(region))
+        )
         checkbox = WebDriverWait(self.driver, 5).until(
             EC.element_to_be_clickable(self.locators.REGION_CHECKBOX(region))
         )
