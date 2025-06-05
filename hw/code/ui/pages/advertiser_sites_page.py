@@ -8,6 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+import logging
 
 class AdvertiserSitesPage(BasePage):
     locators = AdvertiserSitesLocators
@@ -46,7 +47,6 @@ class AdvertiserSitesPage(BasePage):
         return By.XPATH, f'//div[text()="{name}"]'
 
     def PIXEL_SETTINGS(self, href):
-        print(self.get_pixel_ID_by_href(href))
         return By.XPATH, f'//a[text()="Настройка" and @data-route-param-id="{self.get_pixel_ID_by_href(href)}"]'
 
     @staticmethod
@@ -74,7 +74,7 @@ class AdvertiserSitesPage(BasePage):
             WebDriverWait(self.driver, timeout).until(EC.visibility_of(sub_element))
             ActionChains(self.driver).move_to_element(sub_element).click().perform()
         except Exception as e:
-            print(f"Не удалось найти или кликнуть More: {e}")
+            logging.error(f"Не удалось найти или кликнуть More: {e}")
 
     def get_pixel_ID_by_href(self, href):
         result = self.get_pixel_data()
@@ -99,7 +99,7 @@ class AdvertiserSitesPage(BasePage):
 
                 result.append([row, site_href, pixel_id])
             except Exception as e:
-                print(f"Ошибка при разборе строки: {e}")
+                logging.error(f"Ошибка при разборе строки: {e}")
                 continue
         return result
 
@@ -116,6 +116,9 @@ class AdvertiserSitesPage(BasePage):
 
     def wait_invisibility(self, locator, timeout=15):
         return WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located(locator))
+    
+    def wait_visibility(self, locator, timeout=15):
+        return WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(locator))
 
     
     def find_all(self, locator, timeout=None) -> List[WebElement]:
@@ -123,7 +126,7 @@ class AdvertiserSitesPage(BasePage):
         return self.driver.find_elements(*locator)
 
     def reload(self):
-        ActionChains(self.driver).send_keys(Keys.F5).perform()
+        self.driver.refresh()
 
     def cancel_rename(self):
         self.click(self.locators.DISMISS_RENAME)
