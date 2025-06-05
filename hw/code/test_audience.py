@@ -57,6 +57,7 @@ class TestAddUserlist(BaseCase):
     CORRECT_NAME = "test_add_new_list"
 
     def test_add_new_list(self, cleanup_registry):
+        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         add_userlist_page = audience_page.go_to_add_userlist_page()
@@ -65,7 +66,6 @@ class TestAddUserlist(BaseCase):
         add_userlist_page.upload_file(os.path.abspath(self.PATH_TO_FILE_UNION_LIST))
         add_userlist_page.set_not_create_new_audience()
         add_userlist_page.click_save_button()
-        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         assert audience_page.has_element(AudiencePage.locators.USERLIST_BY_NAME(self.CORRECT_NAME))
 
     def test_add_to_existing_list(self, prepared_userlist):
@@ -126,6 +126,8 @@ class TestAddAudience(BaseCase):
     LINK_TO_APP = "https://vk.com/app4670469"
 
     def test_add_userlist_source(self, cleanup_registry):
+        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
+        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         add_audience_page = audience_page.go_to_add_audience_page()
@@ -138,11 +140,10 @@ class TestAddAudience(BaseCase):
         add_audience_page.upload_file(os.path.abspath(self.PATH_TO_FILE_UNION_LIST))
         add_audience_page.click_save_button_in_modal_wait()
         add_audience_page.click_save_button()
-        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
-        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         assert audience_page.has_element(AudiencePage.locators.AUDIENCE_BY_NAME(self.CORRECT_NAME))
 
     def test_delete_audience(self, cleanup_registry):
+        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         add_audience_page = audience_page.go_to_add_audience_page()
@@ -155,12 +156,13 @@ class TestAddAudience(BaseCase):
         add_audience_page.upload_file(os.path.abspath(self.PATH_TO_FILE_UNION_LIST))
         add_audience_page.click_save_button_in_modal_wait()
         add_audience_page.click_save_button()
-        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         audience_page.delete_audience(self.CORRECT_NAME)
         audience_page.reload()
         assert not audience_page.has_element(AudiencePage.locators.AUDIENCE_BY_NAME(self.CORRECT_NAME))
 
     def test_exclude_userlist_source(self, cleanup_registry):
+        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
+        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         add_audience_page = audience_page.go_to_add_audience_page()
@@ -173,11 +175,12 @@ class TestAddAudience(BaseCase):
         add_audience_page.upload_file(os.path.abspath(self.PATH_TO_FILE_UNION_LIST))
         add_audience_page.click_save_button_in_modal_wait()
         add_audience_page.click_save_button()
-        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
-        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         assert audience_page.has_element(AudiencePage.locators.AUDIENCE_BY_NAME(self.CORRECT_NAME))
 
     def test_add_existing_audience_source(self, cleanup_registry):
+        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME_V2))
+        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
+        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         add_audience_page = audience_page.go_to_add_audience_page()
@@ -197,12 +200,10 @@ class TestAddAudience(BaseCase):
         add_audience_page.set_audience()
         add_audience_page.click_save_button_in_modal()
         add_audience_page.click_save_button()
-        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME_V2))
-        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
-        cleanup_registry.append((self.OBJ_TYPE_USERLIST, self.CORRECT_NAME))
         assert audience_page.has_element(AudiencePage.locators.AUDIENCE_BY_NAME(self.CORRECT_NAME_V2))
 
     def test_add_key_phrases_source(self, cleanup_registry):
+        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         add_audience_page = audience_page.go_to_add_audience_page()
@@ -212,10 +213,10 @@ class TestAddAudience(BaseCase):
         add_audience_page.add_key_phrase(self.KEY_PHRASE)
         add_audience_page.click_save_button_in_modal()
         add_audience_page.click_save_button()
-        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
         assert audience_page.has_element(AudiencePage.locators.AUDIENCE_BY_NAME(self.CORRECT_NAME))
 
     def test_add_subscribers_source(self, cleanup_registry):
+        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         add_audience_page = audience_page.go_to_add_audience_page()
@@ -225,10 +226,10 @@ class TestAddAudience(BaseCase):
         add_audience_page.add_communtity(self.LINK_TO_COMMUNITY)
         add_audience_page.click_save_button_in_modal()
         add_audience_page.click_save_button()
-        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
         assert audience_page.has_element(AudiencePage.locators.AUDIENCE_BY_NAME(self.CORRECT_NAME))
 
     def test_add_listeners_source(self, cleanup_registry):
+        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         add_audience_page = audience_page.go_to_add_audience_page()
@@ -238,10 +239,10 @@ class TestAddAudience(BaseCase):
         add_audience_page.set_musician_name(self.MUSICIAN_NAME)
         add_audience_page.click_save_button_in_modal()
         add_audience_page.click_save_button()
-        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
         assert audience_page.has_element(AudiencePage.locators.AUDIENCE_BY_NAME(self.CORRECT_NAME))
 
     def test_add_vk_mini_apps_source(self, cleanup_registry):
+        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
         self.driver.get(AudiencePage.url)
         audience_page = AudiencePage(self.driver)
         add_audience_page = audience_page.go_to_add_audience_page()
@@ -251,7 +252,6 @@ class TestAddAudience(BaseCase):
         add_audience_page.add_app(self.LINK_TO_APP)
         add_audience_page.click_save_button_in_modal()
         add_audience_page.click_save_button()
-        cleanup_registry.append((self.OBJ_TYPE_AUDIENCE, self.CORRECT_NAME))
         assert audience_page.has_element(AudiencePage.locators.AUDIENCE_BY_NAME(self.CORRECT_NAME))
 
 class TestAddOfflineConversion(BaseCase):

@@ -52,6 +52,8 @@ class AudiencePage(BasePage):
         ActionChains(self.driver).move_to_element(status).perform()
     
     def delete_userlist(self, name: str):
+        if not self.has_element(self.locators.USERLIST_BY_NAME(name)):
+            return
         userlist = self.find(self.locators.USERLIST_BY_NAME(name))
         ActionChains(self.driver).move_to_element(userlist).perform()
         menu = self.find(self.locators.MENU_BUTTON)
@@ -63,6 +65,8 @@ class AudiencePage(BasePage):
         self.wait_invisibility(self.locators.DELETE_CONFIRM_BUTTON)
 
     def delete_audience(self, name: str):
+        if not self.has_element(self.locators.AUDIENCE_BY_NAME(name)):
+            return
         userlist = self.find(self.locators.AUDIENCE_BY_NAME(name))
         ActionChains(self.driver).move_to_element(userlist).perform()
         menu = self.find(self.locators.AUDIENCE_MENU_BUTTON)
