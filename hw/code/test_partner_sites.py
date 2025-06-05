@@ -73,6 +73,8 @@ class TestAddPartnerSite(BaseCase):
         assert sites_page.has_element(
             PartnerSitesPage.locators.SITE_ENTRY(site_id))
 
+        sites_page.set_site_status(site_id, SiteStatus.ARCHIVED)
+
 class TestPartnerSite(BaseCase):
     user = UserType.PARTNER
 
