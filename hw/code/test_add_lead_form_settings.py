@@ -13,11 +13,14 @@ class TestCreateLeadFormSettingsPage(BaseCase):
     def settings_page(self, request):
         driver = self.driver
         driver.get(LeadFormsPage.url)
-        return LeadFormsPage(driver).\
+        yield LeadFormsPage(driver).\
             go_to_lead_forms_decor_page().\
             go_to_questions_page(LeadFormDecorPage.correct_page_data).\
             go_to_result_page().\
             go_to_settings_page()
+        lead_form_name = getattr(request.node, 'lead_form_name', None)
+        if lead_form_name:
+            LeadFormsPage(self.driver).remove_lead_form(lead_form_name)
     
     def test_enter_name_empty(self, settings_page):
         settings_page.enter_name('')
@@ -31,8 +34,9 @@ class TestCreateLeadFormSettingsPage(BaseCase):
         settings_page.enter_inn('1' * 33)
         assert settings_page.has_element(LeadFormSettingsPageLocators.INN_LONG)
 
-    def test_save_form(self):
+    def test_save_form(self, request, settings_page):
         lead_form_name = generate_random_string(10)
+        request.node.lead_form_name = lead_form_name
         decor_page_data = CorrectDecorPageData(
             name=lead_form_name,
             logo='./images/logo.jpg',
@@ -52,6 +56,6 @@ class TestCreateLeadFormSettingsPage(BaseCase):
         settings_page.enter_name('Иван Иванов')
         settings_page.enter_address('Москва, ул. Пушкина, д. 1')
         assert settings_page.has_element(LeadFormsPage.locators.LEAD_FORM_NAME(lead_form_name))
-        LeadFormsPage(driver).remove_lead_form(lead_form_name)
+        
         
 

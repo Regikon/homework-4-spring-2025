@@ -51,6 +51,7 @@ class TestCreateLeadFormResultPage(BaseCase):
         result_page.click_add_promo()
         result_page.enter_promo('123')
         assert result_page.has_element(LeadFormResultPageLocators.HAS_PROMO)
+        assert result_page.has_element(LeadFormResultPageLocators.PROMO_VALUE('123'))
         assert not result_page.has_element(LeadFormResultPageLocators.PROMO_TOO_LONG)
 
     def test_add_promo_too_long(self, result_page):

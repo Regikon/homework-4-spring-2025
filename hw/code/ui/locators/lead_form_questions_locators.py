@@ -35,9 +35,4 @@ class LeadFormQuestionsLocators:
     HAS_CONTACTS_CITY_ON_PREVIEW = (By.XPATH, "//input[@placeholder='Введите город']")
     HAS_CONTACTS_TELEPHONE_ON_PREVIEW = (By.XPATH, "//input[@placeholder='+7']")
 
-    CONTINUE = (By.XPATH, "//span[@class='vkuiButton__in'][.//span[text()='Продолжить']]")
-
-    STATUS_BAR_RESULT_PAGE_ACTIVE = (By.XPATH, "//div[contains(@class, 'CreateLeadFormModal_activeStep') and contains(., 'Результат')]")
-    
-
-
+    CONTINUE = (By.XPATH, "//span[@class='vkuiButton__in'][.//span[text()='Продолжить']]")    
