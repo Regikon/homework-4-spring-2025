@@ -13,6 +13,10 @@ class LeadFormResultPageLocators:
 
     ADD_PROMO = (By.XPATH, "//div[@role='button'][.//*[contains(., 'промокод')]]")
     PROMO = (By.XPATH, "//div[contains(@class, 'vkuiFormItem')][.//*[text()='Промокод']]//input")
+    @staticmethod
+    def PROMO_VALUE(text: str):
+        return (By.XPATH, f'//input[@placeholder="Введите промокод" and @value="{text}"]')
+    
     HAS_PROMO = (By.XPATH, "//span[contains(@class, 'vkuiFormField')][.//*[@aria-label='Скопировать']]")
     PROMO_TOO_LONG = (By.XPATH, "//div[contains(@class, 'vkuiFormItem')][.//*[text()='Промокод']]//*[text()='Сократите текст']")
 

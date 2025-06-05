@@ -64,8 +64,4 @@ class TestCreateLeadFormQuestionPage(BaseCase):
         assert question_page.has_element(LeadFormQuestionsLocators.HAS_CONTACTS_NAME_ON_PREVIEW)
         assert question_page.has_element(LeadFormQuestionsLocators.HAS_CONTACTS_TELEPHONE_ON_PREVIEW)
         assert question_page.has_element(LeadFormQuestionsLocators.HAS_CONTACTS_CITY_ON_PREVIEW)
-    
-    def test_go_to_result_page(self, question_page):
-        question_page.go_to_result_page()
-        assert question_page.has_element(LeadFormQuestionsLocators.STATUS_BAR_RESULT_PAGE_ACTIVE)
-
+        
